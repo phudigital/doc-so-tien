@@ -230,3 +230,12 @@
             border-radius: 6px; text-align: center; display: none;
             margin-bottom: 20px; font-weight: 600;
         }
+
+        /* Intro Text */
+        .intro-text {
+            text-align: center;
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }

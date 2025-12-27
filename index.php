@@ -15,6 +15,7 @@ require_once 'process.php';
 
 <div class="container">
     <h2>Công Cụ Tính Thuế & Đọc Số Tiền</h2>
+    <p class="intro-text">Công cụ giúp tính thuế VAT (8% hoặc 10%), đọc số tiền thành chữ bằng tiếng Việt và tiếng Anh, đồng thời đề xuất số tiền làm tròn thông minh để giá chẵn nghìn. Phù hợp cho kế toán và hóa đơn.</p>
     
     <div class="main-content">
         <!-- LEFT PANEL -->

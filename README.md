@@ -4,6 +4,10 @@
 
 Đây là một công cụ web đơn giản giúp tính toán thuế VAT (8% hoặc 10%), đọc số tiền thành chữ bằng tiếng Việt và tiếng Anh, đồng thời đề xuất số tiền làm tròn thông minh để giá trước thuế và VAT chẵn nghìn. Phù hợp cho kế toán, hóa đơn, hoặc bất kỳ ai cần xử lý số tiền nhanh chóng.
 
+## Truy Cập Trực Tiếp
+
+Bạn có thể sử dụng công cụ ngay tại: [https://app.pdl.vn/doc-so-tien/](https://app.pdl.vn/doc-so-tien/)
+
 ## Tính Năng Chính
 
 - **Tính Thuế VAT**: Tính thuế xuôi (từ giá trước thuế) hoặc ngược (từ tổng tiền đã bao gồm thuế).

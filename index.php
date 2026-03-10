@@ -1,4 +1,5 @@
 <?php
+require_once 'version.php';
 require_once 'process.php';
 ?>
 
@@ -8,121 +9,136 @@ require_once 'process.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Công cụ Kế toán Online: Đọc số tiền thành chữ, Tính thuế VAT (8%, 10%), Tính ngược và Đề xuất làm tròn số tiền thông minh.">
-    <title>Công Cụ Đọc Số Tiền</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>QuoteCalc - Tính Thuế VAT & Đọc Số Tiền</title>
+    <link rel="stylesheet" href="styles.css?v=<?php echo APP_VERSION; ?>">
 </head>
 <body>
+<main class="page-wrap">
+    <section class="hero">
+        <div class="hero-inner">
+            <div class="hero-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" role="presentation">
+                    <rect x="5" y="2.5" width="14" height="19" rx="2.5"></rect>
+                    <rect x="7.5" y="5" width="9" height="3.2" rx="1"></rect>
+                    <circle cx="8.7" cy="11" r="1"></circle>
+                    <circle cx="12" cy="11" r="1"></circle>
+                    <circle cx="15.3" cy="11" r="1"></circle>
+                    <circle cx="8.7" cy="14.3" r="1"></circle>
+                    <circle cx="12" cy="14.3" r="1"></circle>
+                    <circle cx="15.3" cy="14.3" r="1"></circle>
+                    <path d="M8.4 17.9h7.2"></path>
+                </svg>
+            </div>
+            <h1 class="hero-title">QuoteCalc<span>+</span></h1>
+            <p class="hero-subtitle">Tính VAT và đọc số tiền với giao diện hiện đại, dễ sử dụng.</p>
 
-<div class="container">
-    <h2>Công Cụ Tính Thuế & Đọc Số Tiền</h2>
-    <p class="intro-text">Công cụ giúp tính thuế VAT (8% hoặc 10%), đọc số tiền thành chữ bằng tiếng Việt và tiếng Anh, đồng thời đề xuất số tiền làm tròn thông minh để giá chẵn nghìn. Phù hợp cho kế toán và hóa đơn.</p>
-    
-    <div class="main-content">
-        <!-- LEFT PANEL -->
-        <div class="left-panel">
-            <form id="calcForm">
-                <div class="form-group">
-                    <label class="input-label" for="amount">Nhập số tiền:</label>
-                    <input type="text" id="amount" placeholder="VD: 10.000.000" autocomplete="off" autofocus>
+            <form id="calcForm" class="hero-form">
+                <div class="hero-primary-row">
+                    <div class="field grow">
+                        <label class="input-label" for="amount">Số tiền</label>
+                        <input type="text" id="amount" placeholder="VD: 10.000.000" autocomplete="off" autofocus>
+                    </div>
+                    <button type="submit" class="btn-submit">Xem Kết Quả</button>
                 </div>
 
-                <!-- VAT Selection -->
-                <div class="vat-group">
-                    <span>Mức thuế VAT:</span>
-                    <label class="vat-option">
-                        <input type="radio" name="vat_rate" value="0.08" checked> 8%
-                    </label>
-                    <label class="vat-option">
-                        <input type="radio" name="vat_rate" value="0.10"> 10%
+                <div class="controls-row">
+                    <div class="vat-group">
+                        <span>VAT:</span>
+                        <label class="vat-option">
+                            <input type="radio" name="vat_rate" value="0.08" checked> 8%
+                        </label>
+                        <label class="vat-option">
+                            <input type="radio" name="vat_rate" value="0.10"> 10%
+                        </label>
+                    </div>
+
+                    <label class="checkbox-group">
+                        <input type="checkbox" id="is_tax_included">
+                        <span>Đã bao gồm VAT</span>
                     </label>
                 </div>
-                
-                <label class="checkbox-group">
-                    <input type="checkbox" id="is_tax_included">
-                    <span>Số tiền đã bao gồm thuế</span>
-                </label>
-
-                <div id="error-msg" class="error-msg"></div>
-                
-                <button type="submit" class="btn-submit">Xử Lý & Đọc Số</button>
             </form>
+
+            <p class="hero-note">Nhập số tiền, chọn VAT, hệ thống sẽ tính và lưu lịch sử phí bên dưới.</p>
         </div>
+    </section>
 
-        <!-- RIGHT PANEL -->
-        <div class="right-panel">
-            <div id="result-area">
-                
-                <!-- Suggestion -->
-                <div id="suggestion-box">
-                    <div>
-                        ⚠ <strong>Đề xuất làm tròn thông minh:</strong><br>
-                        Để giá trước thuế và VAT chẵn nghìn, số tiền nên là:<br>
-                        <span class="suggest-highlight" id="sug-amount"></span><br>
-                        <span style="font-size: 0.9em; color: #c0392b;">(Giảm đi <span id="sug-diff"></span> so với số nhập)</span>
-                        <div style="margin-top: 5px; font-size: 0.85em; color: #666;">
-                            ➡ Trước thuế: <span id="sug-pre"></span> | VAT: <span id="sug-vat"></span>
-                        </div>
-                    </div>
-                    <button type="button" class="btn-apply" id="btn-apply-suggestion">Áp dụng số này</button>
-                </div>
+    <section class="content" id="content-start">
+        <div class="content-inner">
+            <div id="error-msg" class="error-msg"></div>
 
-                <!-- Result Table -->
-                <table class="tax-table">
-                    <tr>
-                        <td>Trước thuế:</td>
-                        <td id="res-pre"></td>
-                    </tr>
-                    <tr>
-                        <td id="lbl-vat">VAT (8%):</td>
-                        <td id="res-vat"></td>
-                    </tr>
-                    <tr>
-                        <td>Tổng thanh toán:</td>
-                        <td id="res-post"></td>
-                    </tr>
-                </table>
-
-                <!-- Copy Blocks -->
-                <div class="copy-grid">
-                    <div class="copy-row">
-                        <label>Viết hoa đầu câu</label>
-                        <div class="text-box" id="txt-sentence"></div>
-                        <button class="btn-copy" onclick="copyToClip('txt-sentence', this)">COPY</button>
-                    </div>
-
-                    <div class="copy-row">
-                        <label>Viết hoa đầu mỗi từ</label>
-                        <div class="text-box" id="txt-title"></div>
-                        <button class="btn-copy" onclick="copyToClip('txt-title', this)">COPY</button>
-                    </div>
-
-                    <div class="copy-row">
-                        <label>In hoa toàn bộ</label>
-                        <div class="text-box" id="txt-upper"></div>
-                        <button class="btn-copy" onclick="copyToClip('txt-upper', this)">COPY</button>
-                    </div>
-
-                    <div class="copy-row">
-                        <label>Tiếng Anh (English)</label>
-                        <div class="text-box" id="txt-en"></div>
-                        <button class="btn-copy" onclick="copyToClip('txt-en', this)">COPY</button>
-                    </div>
-                </div>
-
-            </div> <!-- End result-area -->
-            
-            <div id="empty-state" style="text-align: center; color: #999; margin-top: 50px;">
-                <p>Nhập số liệu và chọn mức thuế để xem kết quả.</p>
+            <div id="empty-state" class="empty-state">
+                <p>Nhập thông tin ở trên để hiển thị kết quả tính phí.</p>
             </div>
 
-        </div>
-    </div>
-</div>
+            <div id="result-area">
+                <div id="suggestion-box">
+                    <strong>Đề xuất làm tròn:</strong><br>
+                    Số tiền phù hợp hơn:<br>
+                    <span class="suggest-highlight" id="sug-amount"></span>
+                    <div class="suggest-meta">Giảm <span id="sug-diff"></span> so với số nhập.</div>
+                    <div class="suggest-meta">Trước thuế: <strong id="sug-pre"></strong> | VAT: <strong id="sug-vat"></strong></div>
+                    <button type="button" class="btn-apply" id="btn-apply-suggestion">Áp dụng</button>
+                </div>
 
-<script src="script.js"></script>
-<div style="position: fixed; bottom: 0; left: 0; right: 0; text-align: center; background: white; padding: 5px; border-top: 1px solid #ccc;">
-    Copyright by Phu Digital Vibe Coding | Phiên bản <?php echo $version; ?>
-</div>
+                <div class="results-container">
+                    <table class="tax-table">
+                        <tr>
+                            <td>Trước thuế:</td>
+                            <td id="res-pre"></td>
+                        </tr>
+                        <tr>
+                            <td id="lbl-vat">VAT (8%):</td>
+                            <td id="res-vat"></td>
+                        </tr>
+                        <tr>
+                            <td>Tổng thanh toán:</td>
+                            <td id="res-post"></td>
+                        </tr>
+                    </table>
+
+                    <div class="copy-grid">
+                        <div class="copy-row">
+                            <label>Viết hoa đầu câu</label>
+                            <div class="text-box" id="txt-sentence"></div>
+                            <button class="btn-copy" onclick="copyToClip('txt-sentence', this)">COPY</button>
+                        </div>
+                        <div class="copy-row">
+                            <label>Viết hoa đầu mỗi từ</label>
+                            <div class="text-box" id="txt-title"></div>
+                            <button class="btn-copy" onclick="copyToClip('txt-title', this)">COPY</button>
+                        </div>
+                        <div class="copy-row">
+                            <label>In hoa toàn bộ</label>
+                            <div class="text-box" id="txt-upper"></div>
+                            <button class="btn-copy" onclick="copyToClip('txt-upper', this)">COPY</button>
+                        </div>
+                        <div class="copy-row">
+                            <label>Tiếng Anh</label>
+                            <div class="text-box" id="txt-en"></div>
+                            <button class="btn-copy" onclick="copyToClip('txt-en', this)">COPY</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="history-section visible">
+                <div class="history-header">
+                    <div class="history-title">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm.5 5H11v6l5.25 3.15.75-1.23-4.5-2.67z"></path></svg>
+                        Lịch sử phí gần đây
+                    </div>
+                    <button class="btn-clear-history" id="btn-clear-history" style="display: none;">Xóa</button>
+                </div>
+                <div class="history-list" id="history-list">
+                    <div class="history-empty">Chưa có lịch sử</div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<script src="script.js?v=<?php echo APP_VERSION; ?>"></script>
 
 </body>
 </html>

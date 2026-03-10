@@ -12,12 +12,64 @@ window.addEventListener("DOMContentLoaded", function () {
   loadHistory();
 });
 
-// 1. Format input
+// 1. Format input and show suggestions
 amountInput.addEventListener("input", function (e) {
   let value = e.target.value.replace(/\D/g, "");
+  
+  // Show suggestions if user types a number
+  if (value && value.length <= 3) {
+    showSuggestions(value);
+  } else {
+    hideSuggestions();
+  }
+  
   if (value) value = parseInt(value, 10).toLocaleString("vi-VN");
   e.target.value = value;
 });
+
+// Hide suggestions when clicking outside
+document.addEventListener("click", function(e) {
+  const dropdown = document.getElementById("suggestion-dropdown");
+  if (e.target !== amountInput && !dropdown.contains(e.target)) {
+    hideSuggestions();
+  }
+});
+
+function showSuggestions(num) {
+  const dropdown = document.getElementById("suggestion-dropdown");
+  const baseNum = parseInt(num);
+  
+  if (isNaN(baseNum) || baseNum === 0) {
+    hideSuggestions();
+    return;
+  }
+  
+  const suggestions = [
+    { value: baseNum * 100000, label: "trăm ngàn" },
+    { value: baseNum * 1000000, label: "triệu" },
+    { value: baseNum * 10000000, label: "chục triệu" }
+  ];
+  
+  dropdown.innerHTML = suggestions.map(sug => 
+    `<div class="suggestion-item" onclick="applySuggestion(${sug.value})">
+      <strong>${sug.value.toLocaleString('vi-VN')}</strong>
+      <small>(${sug.label})</small>
+    </div>`
+  ).join('');
+  
+  dropdown.classList.add('visible');
+}
+
+function hideSuggestions() {
+  const dropdown = document.getElementById("suggestion-dropdown");
+  dropdown.classList.remove('visible');
+}
+
+function applySuggestion(value) {
+  amountInput.value = value.toLocaleString('vi-VN');
+  hideSuggestions();
+  amountInput.focus();
+}
 
 // 2. Tự động tính khi đổi Radio VAT
 vatRadios.forEach((radio) => {

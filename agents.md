@@ -88,4 +88,4 @@ doc-so-tien/
 
 - **Tác giả**: Phu Digital Vibe Coding
 - **Website**: https://pdl.vn
-- **Email**: contact@pdl.vn
+- **Email**: info@pdl.vn

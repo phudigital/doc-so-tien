@@ -76,7 +76,7 @@ function clearHistory() {
 }
 
 // Xử lý request POST từ script.js
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
     header('Content-Type: application/json');
     
     // Lấy dữ liệu từ $_POST (URLSearchParams sẽ đổ vào đây)

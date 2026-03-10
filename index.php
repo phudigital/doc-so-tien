@@ -34,9 +34,10 @@ require_once 'process.php';
 
             <form id="calcForm" class="hero-form">
                 <div class="hero-primary-row">
-                    <div class="field grow">
+                    <div class="field grow" style="position: relative;">
                         <label class="input-label" for="amount">Số tiền</label>
                         <input type="text" id="amount" placeholder="VD: 10.000.000" autocomplete="off" autofocus>
+                        <div id="suggestion-dropdown" class="suggestion-dropdown"></div>
                     </div>
                     <button type="submit" class="btn-submit">Xem Kết Quả</button>
                 </div>

@@ -1,18 +1,18 @@
 @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap");
 
 :root {
-    --bg: #050608;
-    --bg-soft: #0d1016;
-    --surface: #131823;
-    --surface-2: #1a2130;
-    --text: #f3f6fb;
-    --muted: #9aa7bd;
+    --bg: #f8f9fb;
+    --bg-soft: #ffffff;
+    --surface: #ffffff;
+    --surface-2: #f3f5f7;
+    --text: #1a2332;
+    --muted: #6b7280;
     --accent: #33d17a;
     --accent-2: #4ecbff;
-    --line: #273041;
+    --line: #e5e7eb;
     --ok: #2fc179;
-    --err: #ff4b4b;
-    --shadow: 0 18px 45px rgba(0, 0, 0, 0.45);
+    --err: #ef4444;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 * {
@@ -23,7 +23,7 @@
 
 body {
     font-family: "Space Grotesk", "Segoe UI", sans-serif;
-    background: radial-gradient(circle at 20% 0%, #102332 0%, var(--bg) 48%);
+    background: linear-gradient(135deg, #e0f7fa 0%, #f8f9fb 100%);
     color: var(--text);
     min-height: 100vh;
 }
@@ -51,16 +51,16 @@ body {
     border-radius: 22px;
     display: grid;
     place-items: center;
-    background: linear-gradient(145deg, rgba(51, 209, 122, 0.2), rgba(78, 203, 255, 0.2));
-    border: 1px solid rgba(110, 228, 193, 0.45);
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+    background: linear-gradient(145deg, rgba(51, 209, 122, 0.15), rgba(78, 203, 255, 0.15));
+    border: 2px solid rgba(51, 209, 122, 0.3);
+    box-shadow: 0 4px 12px rgba(51, 209, 122, 0.2);
 }
 
 .hero-icon svg {
     width: 46px;
     height: 46px;
     fill: none;
-    stroke: #8af7cc;
+    stroke: #10b981;
     stroke-width: 1.4;
     stroke-linecap: round;
     stroke-linejoin: round;
@@ -85,7 +85,7 @@ body {
 
 .hero-form {
     margin-top: 30px;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0.01) 100%);
+    background: var(--bg-soft);
     border: 1px solid var(--line);
     border-radius: 18px;
     padding: 18px;
@@ -115,8 +115,8 @@ body {
 
 input[type="text"] {
     width: 100%;
-    border: 1px solid #323c4f;
-    background: #0a0e14;
+    border: 2px solid var(--line);
+    background: var(--bg-soft);
     color: var(--text);
     border-radius: 12px;
     padding: 14px 16px;
@@ -128,7 +128,7 @@ input[type="text"] {
 
 input[type="text"]:focus {
     border-color: var(--accent);
-    box-shadow: 0 0 0 4px rgba(78, 203, 255, 0.2);
+    box-shadow: 0 0 0 4px rgba(51, 209, 122, 0.12);
 }
 
 .controls-row {
@@ -182,8 +182,54 @@ input[type="checkbox"] {
 
 .hero-note {
     margin-top: 14px;
-    color: #7f8ba1;
+    color: var(--muted);
     font-size: 13px;
+}
+
+.suggestion-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--bg-soft);
+    border: 2px solid var(--accent);
+    border-radius: 8px;
+    margin-top: 4px;
+    max-height: 160px;
+    overflow-y: auto;
+    z-index: 100;
+    display: none;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.suggestion-dropdown.visible {
+    display: block;
+}
+
+.suggestion-item {
+    padding: 10px 14px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--line);
+    transition: background 0.15s ease;
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.suggestion-item:hover {
+    background: var(--surface-2);
+}
+
+.suggestion-item strong {
+    color: var(--text);
+    font-size: 16px;
+}
+
+.suggestion-item small {
+    color: var(--muted);
+    font-size: 12px;
+    margin-left: 6px;
 }
 
 .content {
@@ -197,17 +243,17 @@ input[type="checkbox"] {
 
 .error-msg {
     display: none;
-    background: rgba(255, 75, 75, 0.14);
-    border: 1px solid rgba(255, 75, 75, 0.55);
-    color: #ffbcbc;
+    background: #fef2f2;
+    border: 1px solid #fca5a5;
+    color: #991b1b;
     border-radius: 12px;
     padding: 12px 14px;
     margin-bottom: 12px;
 }
 
 .empty-state {
-    border: 1px dashed #2a3344;
-    background: rgba(15, 20, 30, 0.45);
+    border: 2px dashed var(--line);
+    background: var(--bg-soft);
     border-radius: 14px;
     color: var(--muted);
     padding: 20px;
@@ -233,24 +279,28 @@ input[type="checkbox"] {
     margin-top: 6px;
     font-size: 24px;
     font-weight: 700;
-    color: #7cefcf;
+    color: #b45309;
 }
 
 .suggest-meta {
     margin-top: 6px;
-    color: #a6e9d8;
+    color: #78350f;
     font-size: 13px;
 }
 
 .btn-apply {
     margin-top: 10px;
     border: none;
-    background: linear-gradient(90deg, #33d17a, #4ecbff);
-    color: #042012;
+    background: #f59e0b;
+    color: #fff;
     padding: 8px 12px;
     border-radius: 8px;
     cursor: pointer;
     font-weight: 600;
+}
+
+.btn-apply:hover {
+    background: #d97706;
 }
 
 .results-container {
@@ -267,7 +317,7 @@ input[type="checkbox"] {
 }
 
 .tax-table td {
-    border-bottom: 1px solid #2a3445;
+    border-bottom: 1px solid var(--line);
     padding: 12px 4px;
 }
 
@@ -298,18 +348,18 @@ input[type="checkbox"] {
     display: block;
     margin-bottom: 6px;
     font-size: 12px;
-    color: #8997ae;
+    color: var(--muted);
 }
 
 .text-box {
-    border: 1px solid #2a3445;
+    border: 1px solid var(--line);
     background: var(--surface-2);
     border-radius: 10px;
     min-height: 44px;
     padding: 10px 88px 10px 12px;
     display: flex;
     align-items: center;
-    color: #f0f4ff;
+    color: var(--text);
 }
 
 .btn-copy {
@@ -317,12 +367,17 @@ input[type="checkbox"] {
     right: 8px;
     bottom: 8px;
     border: none;
-    background: #2d374b;
-    color: #f5f8ff;
+    background: #4b5563;
+    color: #ffffff;
     padding: 6px 10px;
     border-radius: 8px;
     font-size: 12px;
     cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn-copy:hover {
+    background: #374151;
 }
 
 .btn-copy.copied {
@@ -364,13 +419,19 @@ input[type="checkbox"] {
 }
 
 .btn-clear-history {
-    border: 1px solid #8f3a3a;
+    border: 1px solid #dc2626;
     background: transparent;
-    color: #ff8f8f;
+    color: #dc2626;
     padding: 6px 10px;
     border-radius: 8px;
     cursor: pointer;
     font-size: 12px;
+    transition: all 0.2s ease;
+}
+
+.btn-clear-history:hover {
+    background: #dc2626;
+    color: #ffffff;
 }
 
 .history-list {
@@ -379,7 +440,7 @@ input[type="checkbox"] {
 }
 
 .history-item {
-    border: 1px solid #2a3445;
+    border: 1px solid var(--line);
     background: var(--surface-2);
     border-radius: 10px;
     padding: 10px 12px;
@@ -387,10 +448,12 @@ input[type="checkbox"] {
     justify-content: space-between;
     gap: 10px;
     cursor: pointer;
+    transition: all 0.2s ease;
 }
 
 .history-item:hover {
-    border-color: #435470;
+    border-color: var(--accent);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .history-amount {

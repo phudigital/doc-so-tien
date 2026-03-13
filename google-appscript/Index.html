@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="QuoteCalc+ - Công cụ Kế toán Online: Đọc số tiền thành chữ, Tính thuế VAT (8%, 10%), Đề xuất làm tròn thông minh.">
+  <title>QuoteCalc+ | Tính Thuế VAT & Đọc Số Tiền</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ===== DESIGN SYSTEM ===== */
+    :root {
+      --bg-primary: #0a0e17;
+      --bg-secondary: #111827;
+      --bg-card: #1a2236;
+      --bg-card-hover: #1e2842;
+      --bg-input: #0f172a;
+      --bg-glass: rgba(26, 34, 54, 0.85);
+      
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --text-accent: #38bdf8;
+      
+      --accent-1: #6366f1;  /* Indigo */
+      --accent-2: #8b5cf6;  /* Violet */
+      --accent-3: #a78bfa;
+      --gradient-main: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a78bfa 100%);
+      --gradient-glow: linear-gradient(135deg, rgba(99,102,241,0.4) 0%, rgba(139,92,246,0.4) 100%);
+      --gradient-surface: linear-gradient(145deg, rgba(99,102,241,0.08) 0%, rgba(139,92,246,0.04) 100%);
+      
+      --border: rgba(148, 163, 184, 0.1);
+      --border-accent: rgba(99, 102, 241, 0.3);
+      
+      --success: #22c55e;
+      --success-bg: rgba(34, 197, 94, 0.1);
+      --warning: #f59e0b;
+      --warning-bg: rgba(245, 158, 11, 0.1);
+      --error: #ef4444;
+      --error-bg: rgba(239, 68, 68, 0.1);
+      
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+      --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.3);
+      --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.4);
+      --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.15);
+      
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+      
+      --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ===== AMBIENT BACKGROUND ===== */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: 
+        radial-gradient(ellipse at 20% 50%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(139, 92, 246, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 80%, rgba(56, 189, 248, 0.04) 0%, transparent 50%);
+      z-index: 0;
+      animation: ambientShift 20s ease-in-out infinite alternate;
+    }
+
+    @keyframes ambientShift {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      100% { transform: translate(-2%, -1%) rotate(2deg); }
+    }
+
+    /* ===== LAYOUT ===== */
+    .app-container {
+      position: relative;
+      z-index: 1;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 24px 16px 48px;
+    }
+
+    /* ===== HEADER ===== */
+    .app-header {
+      text-align: center;
+      padding: 40px 0 32px;
+    }
+
+    .logo-mark {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 20px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--gradient-main);
+      box-shadow: 0 8px 32px rgba(99, 102, 241, 0.35);
+      animation: logoPulse 3s ease-in-out infinite;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .logo-mark::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 50%);
+      border-radius: inherit;
+    }
+
+    @keyframes logoPulse {
+      0%, 100% { box-shadow: 0 8px 32px rgba(99, 102, 241, 0.35); }
+      50% { box-shadow: 0 12px 48px rgba(99, 102, 241, 0.5); }
+    }
+
+    .logo-mark svg {
+      width: 38px;
+      height: 38px;
+      fill: none;
+      stroke: white;
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      position: relative;
+      z-index: 1;
+    }
+
+    .app-title {
+      font-size: clamp(32px, 8vw, 48px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      background: var(--gradient-main);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .app-subtitle {
+      margin-top: 8px;
+      color: var(--text-secondary);
+      font-size: 15px;
+      font-weight: 400;
+    }
+
+    .version-badge {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 4px 12px;
+      background: var(--gradient-surface);
+      border: 1px solid var(--border-accent);
+      border-radius: 20px;
+      font-size: 11px;
+      color: var(--accent-3);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+
+    /* ===== INPUT CARD ===== */
+    .input-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 24px;
+      box-shadow: var(--shadow-md);
+      backdrop-filter: blur(12px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .input-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--gradient-main);
+      opacity: 0.6;
+    }
+
+    .input-section {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .field-group {
+      position: relative;
+    }
+
+    .field-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 8px;
+    }
+
+    .amount-input-wrap {
+      position: relative;
+    }
+
+    .amount-input {
+      width: 100%;
+      border: 2px solid var(--border);
+      background: var(--bg-input);
+      color: var(--text-primary);
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+      font-size: 22px;
+      font-weight: 700;
+      font-family: inherit;
+      outline: none;
+      transition: border-color var(--transition), box-shadow var(--transition);
+      letter-spacing: 0.02em;
+    }
+
+    .amount-input::placeholder {
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .amount-input:focus {
+      border-color: var(--accent-1);
+      box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15), var(--shadow-glow);
+    }
+
+    /* Suggestion Dropdown */
+    .quick-suggest {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      right: 0;
+      background: var(--bg-card);
+      border: 1px solid var(--border-accent);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      z-index: 100;
+      box-shadow: var(--shadow-lg);
+      display: none;
+    }
+
+    .quick-suggest.visible { display: block; }
+
+    .quick-suggest-item {
+      padding: 12px 16px;
+      cursor: pointer;
+      border-bottom: 1px solid var(--border);
+      transition: background var(--transition);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .quick-suggest-item:last-child { border-bottom: none; }
+    .quick-suggest-item:hover { background: var(--bg-card-hover); }
+
+    .quick-suggest-item strong {
+      color: var(--text-primary);
+      font-size: 16px;
+    }
+
+    .quick-suggest-item .unit-label {
+      color: var(--text-muted);
+      font-size: 12px;
+      background: rgba(99, 102, 241, 0.1);
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+
+    /* Controls */
+    .controls-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .vat-options {
+      display: flex;
+      gap: 4px;
+      background: var(--bg-input);
+      border-radius: var(--radius-sm);
+      padding: 4px;
+      border: 1px solid var(--border);
+    }
+
+    .vat-option {
+      position: relative;
+    }
+
+    .vat-option input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .vat-option label {
+      display: block;
+      padding: 8px 20px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all var(--transition);
+      white-space: nowrap;
+    }
+
+    .vat-option input:checked + label {
+      background: var(--gradient-main);
+      color: white;
+      box-shadow: 0 2px 8px rgba(99, 102, 241, 0.35);
+    }
+
+    .tax-toggle {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 44px;
+      height: 24px;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      transition: all var(--transition);
+      flex-shrink: 0;
+    }
+
+    .toggle-switch::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--text-muted);
+      transition: all var(--transition);
+    }
+
+    .tax-toggle input { display: none; }
+
+    .tax-toggle input:checked ~ .toggle-switch {
+      background: var(--accent-1);
+      border-color: var(--accent-1);
+    }
+
+    .tax-toggle input:checked ~ .toggle-switch::after {
+      left: 22px;
+      background: white;
+    }
+
+    .toggle-label {
+      font-size: 13px;
+      color: var(--text-secondary);
+      font-weight: 500;
+      user-select: none;
+    }
+
+    /* Submit Button */
+    .btn-calculate {
+      width: 100%;
+      border: none;
+      border-radius: var(--radius-md);
+      padding: 16px;
+      font-size: 16px;
+      font-weight: 700;
+      color: white;
+      background: var(--gradient-main);
+      cursor: pointer;
+      transition: all var(--transition);
+      font-family: inherit;
+      letter-spacing: 0.02em;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-calculate::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+
+    .btn-calculate:hover::before { opacity: 1; }
+
+    .btn-calculate:hover {
+      box-shadow: 0 8px 32px rgba(99, 102, 241, 0.4);
+      transform: translateY(-1px);
+    }
+
+    .btn-calculate:active {
+      transform: translateY(0);
+    }
+
+    .btn-calculate:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-calculate .spinner {
+      display: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      margin: 0 auto;
+    }
+
+    .btn-calculate.loading .btn-text { display: none; }
+    .btn-calculate.loading .spinner { display: inline-block; }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ===== ERROR MESSAGE ===== */
+    .error-banner {
+      display: none;
+      margin-top: 16px;
+      padding: 14px 18px;
+      background: var(--error-bg);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      border-radius: var(--radius-md);
+      color: #fca5a5;
+      font-size: 14px;
+      font-weight: 500;
+      animation: slideDown 0.3s ease;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== EMPTY STATE ===== */
+    .empty-state {
+      margin-top: 24px;
+      padding: 40px 20px;
+      text-align: center;
+      border: 2px dashed var(--border);
+      border-radius: var(--radius-lg);
+      background: var(--gradient-surface);
+    }
+
+    .empty-state-icon {
+      font-size: 48px;
+      margin-bottom: 12px;
+      opacity: 0.5;
+    }
+
+    .empty-state p {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    /* ===== RESULTS ===== */
+    .results-section {
+      display: none;
+      margin-top: 24px;
+      animation: fadeUp 0.5s ease;
+    }
+
+    .results-section.active { display: block; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Suggestion Box */
+    .suggestion-card {
+      display: none;
+      margin-bottom: 16px;
+      padding: 18px;
+      background: var(--warning-bg);
+      border: 1px solid rgba(245, 158, 11, 0.2);
+      border-radius: var(--radius-lg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .suggestion-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #f59e0b, #fbbf24);
+    }
+
+    .suggestion-card.active { display: block; }
+
+    .suggestion-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #fbbf24;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 8px;
+    }
+
+    .suggestion-amount {
+      font-size: 26px;
+      font-weight: 800;
+      color: #fbbf24;
+      margin: 4px 0;
+    }
+
+    .suggestion-detail {
+      font-size: 13px;
+      color: #fcd34d;
+      margin-top: 4px;
+      opacity: 0.8;
+    }
+
+    .btn-apply-sug {
+      margin-top: 12px;
+      border: none;
+      background: #f59e0b;
+      color: #1a1a2e;
+      padding: 10px 20px;
+      border-radius: var(--radius-sm);
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all var(--transition);
+    }
+
+    .btn-apply-sug:hover {
+      background: #fbbf24;
+      box-shadow: 0 4px 16px rgba(245, 158, 11, 0.3);
+    }
+
+    /* Tax Result Table */
+    .tax-result-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .tax-result-card h3 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tax-result-card h3 .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-1);
+      box-shadow: 0 0 8px rgba(99, 102, 241, 0.5);
+    }
+
+    .tax-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tax-row:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .tax-row-label {
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .tax-row-value {
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--text-primary);
+      text-align: right;
+    }
+
+    .tax-row.total .tax-row-value {
+      font-size: 20px;
+      background: var(--gradient-main);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Text Results */
+    .text-results {
+      margin-top: 16px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .text-result-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      position: relative;
+      transition: border-color var(--transition);
+    }
+
+    .text-result-item:hover {
+      border-color: var(--border-accent);
+    }
+
+    .text-result-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 6px;
+    }
+
+    .text-result-content {
+      font-size: 14px;
+      color: var(--text-primary);
+      line-height: 1.5;
+      word-break: break-word;
+      padding-right: 72px;
+    }
+
+    .btn-copy {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      border: 1px solid var(--border);
+      background: var(--bg-input);
+      color: var(--text-secondary);
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      letter-spacing: 0.04em;
+      transition: all var(--transition);
+    }
+
+    .btn-copy:hover {
+      border-color: var(--accent-1);
+      color: var(--accent-3);
+      background: rgba(99, 102, 241, 0.1);
+    }
+
+    .btn-copy.copied {
+      background: var(--success-bg);
+      border-color: var(--success);
+      color: var(--success);
+    }
+
+    /* ===== HISTORY ===== */
+    .history-section {
+      margin-top: 24px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+    }
+
+    .history-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .history-head-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .history-head-title svg {
+      width: 18px;
+      height: 18px;
+      stroke: var(--accent-3);
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .btn-clear-history {
+      display: none;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      background: transparent;
+      color: #f87171;
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all var(--transition);
+    }
+
+    .btn-clear-history:hover {
+      background: var(--error-bg);
+      border-color: var(--error);
+    }
+
+    .history-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .history-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .history-item:hover {
+      border-color: var(--border-accent);
+      background: var(--bg-card-hover);
+      transform: translateX(4px);
+    }
+
+    .history-amount {
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--text-primary);
+    }
+
+    .history-meta {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .history-time {
+      font-size: 11px;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .history-empty {
+      text-align: center;
+      padding: 16px;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    /* ===== FOOTER ===== */
+    .app-footer {
+      text-align: center;
+      padding: 32px 0 16px;
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+    .app-footer a {
+      color: var(--accent-3);
+      text-decoration: none;
+    }
+
+    .app-footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 600px) {
+      .app-container { padding: 16px 12px 32px; }
+      .app-header { padding: 24px 0 20px; }
+      
+      .logo-mark { width: 60px; height: 60px; border-radius: 16px; }
+      .logo-mark svg { width: 30px; height: 30px; }
+      
+      .input-card { padding: 18px; border-radius: var(--radius-lg); }
+      .amount-input { font-size: 18px; padding: 14px; }
+      
+      .controls-group {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .suggestion-amount { font-size: 22px; }
+      .tax-row-value { font-size: 14px; }
+      .tax-row.total .tax-row-value { font-size: 17px; }
+      .text-result-content { padding-right: 65px; font-size: 13px; }
+    }
+
+    /* ===== TOAST ===== */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--bg-card);
+      border: 1px solid var(--border-accent);
+      color: var(--text-primary);
+      padding: 12px 24px;
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: var(--shadow-lg);
+      z-index: 9999;
+      opacity: 0;
+      transition: all 0.4s ease;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* ===== SCROLLBAR ===== */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
+  </style>
+</head>
+<body>
+
+<div class="app-container">
+  <!-- ===== HEADER ===== -->
+  <header class="app-header">
+    <div class="logo-mark" aria-hidden="true">
+      <svg viewBox="0 0 24 24">
+        <rect x="5" y="2.5" width="14" height="19" rx="2.5"></rect>
+        <rect x="7.5" y="5" width="9" height="3.2" rx="1"></rect>
+        <circle cx="8.7" cy="11" r="0.9"></circle>
+        <circle cx="12" cy="11" r="0.9"></circle>
+        <circle cx="15.3" cy="11" r="0.9"></circle>
+        <circle cx="8.7" cy="14.3" r="0.9"></circle>
+        <circle cx="12" cy="14.3" r="0.9"></circle>
+        <circle cx="15.3" cy="14.3" r="0.9"></circle>
+        <path d="M8.4 17.9h7.2"></path>
+      </svg>
+    </div>
+    <h1 class="app-title">QuoteCalc<span style="color: #8b5cf6;">+</span></h1>
+    <p class="app-subtitle">Tính VAT · Đọc số tiền thành chữ</p>
+    <span class="version-badge" id="version-badge">v1.0.0</span>
+  </header>
+
+  <!-- ===== INPUT CARD ===== -->
+  <div class="input-card">
+    <form id="calcForm" class="input-section" autocomplete="off">
+      <div class="field-group">
+        <label class="field-label" for="amount">Số tiền (VNĐ)</label>
+        <div class="amount-input-wrap">
+          <input type="text" id="amount" class="amount-input" placeholder="VD: 10.000.000" autofocus>
+          <div id="quick-suggest" class="quick-suggest"></div>
+        </div>
+      </div>
+
+      <div class="controls-group">
+        <div class="vat-options" role="radiogroup" aria-label="Chọn mức VAT">
+          <div class="vat-option">
+            <input type="radio" id="vat8" name="vat_rate" value="0.08" checked>
+            <label for="vat8">VAT 8%</label>
+          </div>
+          <div class="vat-option">
+            <input type="radio" id="vat10" name="vat_rate" value="0.10">
+            <label for="vat10">VAT 10%</label>
+          </div>
+        </div>
+
+        <label class="tax-toggle" for="is_tax_included">
+          <input type="checkbox" id="is_tax_included">
+          <div class="toggle-switch"></div>
+          <span class="toggle-label">Đã bao gồm VAT</span>
+        </label>
+      </div>
+
+      <button type="submit" class="btn-calculate" id="btn-calculate">
+        <span class="btn-text">✨ Xem Kết Quả</span>
+        <span class="spinner"></span>
+      </button>
+    </form>
+  </div>
+
+  <!-- ===== ERROR ===== -->
+  <div id="error-msg" class="error-banner"></div>
+
+  <!-- ===== EMPTY STATE ===== -->
+  <div id="empty-state" class="empty-state">
+    <div class="empty-state-icon">🧮</div>
+    <p>Nhập số tiền để xem kết quả tính thuế và đọc số</p>
+  </div>
+
+  <!-- ===== RESULTS ===== -->
+  <div id="results-section" class="results-section">
+    <!-- Suggestion -->
+    <div id="suggestion-card" class="suggestion-card">
+      <div class="suggestion-title">💡 Đề xuất làm tròn</div>
+      <div class="suggestion-amount" id="sug-amount"></div>
+      <div class="suggestion-detail">Giảm <strong id="sug-diff"></strong> so với số nhập</div>
+      <div class="suggestion-detail">Trước thuế: <strong id="sug-pre"></strong> · VAT: <strong id="sug-vat"></strong></div>
+      <button type="button" class="btn-apply-sug" id="btn-apply-sug">Áp dụng số này</button>
+    </div>
+
+    <!-- Tax Table -->
+    <div class="tax-result-card">
+      <h3><span class="dot"></span> Kết quả tính thuế</h3>
+      <div class="tax-row">
+        <span class="tax-row-label">Trước thuế</span>
+        <span class="tax-row-value" id="res-pre"></span>
+      </div>
+      <div class="tax-row">
+        <span class="tax-row-label" id="lbl-vat">VAT (8%)</span>
+        <span class="tax-row-value" id="res-vat"></span>
+      </div>
+      <div class="tax-row total">
+        <span class="tax-row-label">Tổng thanh toán</span>
+        <span class="tax-row-value" id="res-post"></span>
+      </div>
+    </div>
+
+    <!-- Text Results -->
+    <div class="text-results">
+      <div class="text-result-item">
+        <div class="text-result-label">Viết hoa đầu câu</div>
+        <div class="text-result-content" id="txt-sentence"></div>
+        <button class="btn-copy" data-target="txt-sentence">COPY</button>
+      </div>
+      <div class="text-result-item">
+        <div class="text-result-label">Viết hoa đầu mỗi từ</div>
+        <div class="text-result-content" id="txt-title"></div>
+        <button class="btn-copy" data-target="txt-title">COPY</button>
+      </div>
+      <div class="text-result-item">
+        <div class="text-result-label">In hoa toàn bộ</div>
+        <div class="text-result-content" id="txt-upper"></div>
+        <button class="btn-copy" data-target="txt-upper">COPY</button>
+      </div>
+      <div class="text-result-item">
+        <div class="text-result-label">English</div>
+        <div class="text-result-content" id="txt-en"></div>
+        <button class="btn-copy" data-target="txt-en">COPY</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== HISTORY ===== -->
+  <div class="history-section">
+    <div class="history-head">
+      <div class="history-head-title">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm.5 5H11v6l5.25 3.15.75-1.23-4.5-2.67z" stroke-width="0" fill="currentColor"></path></svg>
+        Lịch sử gần đây
+      </div>
+      <button class="btn-clear-history" id="btn-clear-history">Xóa tất cả</button>
+    </div>
+    <div class="history-list" id="history-list">
+      <div class="history-empty">Chưa có lịch sử tính toán</div>
+    </div>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="app-footer">
+    <p>QuoteCalc+ by <a href="https://pdl.vn" target="_blank">Phu Digital</a></p>
+    <p style="margin-top: 4px;">Chạy trên Google Apps Script · Miễn phí cho mọi người</p>
+  </footer>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ==================== DOM ELEMENTS ====================
+const amountInput = document.getElementById('amount');
+const calcForm = document.getElementById('calcForm');
+const resultSection = document.getElementById('results-section');
+const emptyState = document.getElementById('empty-state');
+const errorBanner = document.getElementById('error-msg');
+const suggestionCard = document.getElementById('suggestion-card');
+const btnCalculate = document.getElementById('btn-calculate');
+const historyList = document.getElementById('history-list');
+const btnClearHistory = document.getElementById('btn-clear-history');
+const quickSuggest = document.getElementById('quick-suggest');
+let currentRawSuggestion = 0;
+
+// ==================== INIT ====================
+document.addEventListener('DOMContentLoaded', () => {
+  loadHistory();
+  // Load version
+  google.script.run.withSuccessHandler(v => {
+    document.getElementById('version-badge').textContent = 'v' + v;
+  }).getAppVersion();
+});
+
+// ==================== INPUT FORMATTING ====================
+amountInput.addEventListener('input', function(e) {
+  let value = e.target.value.replace(/\D/g, '');
+
+  if (value && value.length <= 3) {
+    showQuickSuggest(value);
+  } else {
+    hideQuickSuggest();
+  }
+
+  if (value) value = parseInt(value, 10).toLocaleString('vi-VN');
+  e.target.value = value;
+});
+
+document.addEventListener('click', function(e) {
+  if (e.target !== amountInput && !quickSuggest.contains(e.target)) {
+    hideQuickSuggest();
+  }
+});
+
+function showQuickSuggest(num) {
+  const baseNum = parseInt(num);
+  if (isNaN(baseNum) || baseNum === 0) {
+    hideQuickSuggest();
+    return;
+  }
+
+  const suggestions = [
+    { value: baseNum * 100000, label: 'trăm ngàn' },
+    { value: baseNum * 1000000, label: 'triệu' },
+    { value: baseNum * 10000000, label: 'chục triệu' }
+  ];
+
+  quickSuggest.innerHTML = suggestions.map(s =>
+    `<div class="quick-suggest-item" onclick="applyQuickSuggest(${s.value})">
+      <strong>${s.value.toLocaleString('vi-VN')}</strong>
+      <span class="unit-label">${s.label}</span>
+    </div>`
+  ).join('');
+
+  quickSuggest.classList.add('visible');
+}
+
+function hideQuickSuggest() {
+  quickSuggest.classList.remove('visible');
+}
+
+function applyQuickSuggest(value) {
+  amountInput.value = value.toLocaleString('vi-VN');
+  hideQuickSuggest();
+  amountInput.focus();
+}
+
+// ==================== VAT RADIO CHANGE ====================
+document.querySelectorAll('input[name="vat_rate"]').forEach(radio => {
+  radio.addEventListener('change', () => {
+    if (amountInput.value) runCalculation();
+  });
+});
+
+// ==================== FORM SUBMIT ====================
+calcForm.addEventListener('submit', function(e) {
+  e.preventDefault();
+  runCalculation();
+});
+
+function runCalculation() {
+  const rawValue = amountInput.value.replace(/\./g, '');
+  const isTaxIncluded = document.getElementById('is_tax_included').checked;
+
+  let selectedVat = 0.08;
+  document.querySelectorAll('input[name="vat_rate"]').forEach(radio => {
+    if (radio.checked) selectedVat = parseFloat(radio.value);
+  });
+
+  errorBanner.style.display = 'none';
+  suggestionCard.classList.remove('active');
+
+  if (!rawValue || isNaN(rawValue)) {
+    showError('Vui lòng nhập số tiền hợp lệ.');
+    return;
+  }
+
+  const amount = parseFloat(rawValue);
+  if (amount < 100000 || amount > 100000000000) {
+    showError('Số tiền phải từ 100 ngàn đến 100 tỷ.');
+    return;
+  }
+
+  // Show loading
+  btnCalculate.classList.add('loading');
+  btnCalculate.disabled = true;
+
+  google.script.run
+    .withSuccessHandler(handleResult)
+    .withFailureHandler(handleError)
+    .processCalculation(amount, selectedVat, isTaxIncluded);
+}
+
+function handleResult(data) {
+  btnCalculate.classList.remove('loading');
+  btnCalculate.disabled = false;
+
+  if (data.status === 'success') {
+    emptyState.style.display = 'none';
+    resultSection.classList.add('active');
+
+    document.getElementById('res-pre').textContent = data.data.pre_tax;
+    document.getElementById('res-vat').textContent = data.data.vat;
+    document.getElementById('lbl-vat').textContent = `VAT (${data.data.vat_percent}%)`;
+    document.getElementById('res-post').textContent = data.data.post_tax;
+
+    document.getElementById('txt-sentence').textContent = data.data.text_sentence;
+    document.getElementById('txt-title').textContent = data.data.text_title;
+    document.getElementById('txt-upper').textContent = data.data.text_upper;
+    document.getElementById('txt-en').textContent = data.data.text_en;
+
+    if (data.data.suggestion) {
+      const sug = data.data.suggestion;
+      document.getElementById('sug-amount').textContent = sug.amount_fmt + ' VNĐ';
+      document.getElementById('sug-pre').textContent = sug.pre_fmt;
+      document.getElementById('sug-vat').textContent = sug.vat_fmt;
+      document.getElementById('sug-diff').textContent = sug.diff + ' VNĐ';
+      currentRawSuggestion = sug.amount_raw;
+      suggestionCard.classList.add('active');
+    }
+
+    if (data.history) {
+      displayHistory(data.history);
+    }
+  } else {
+    showError(data.message);
+  }
+}
+
+function handleError(err) {
+  btnCalculate.classList.remove('loading');
+  btnCalculate.disabled = false;
+  showError('Lỗi hệ thống: ' + err.message);
+}
+
+// ==================== APPLY SUGGESTION ====================
+document.getElementById('btn-apply-sug').addEventListener('click', function() {
+  amountInput.value = currentRawSuggestion.toLocaleString('vi-VN');
+  runCalculation();
+});
+
+// ==================== ERROR DISPLAY ====================
+function showError(msg) {
+  errorBanner.textContent = '⚠️ ' + msg;
+  errorBanner.style.display = 'block';
+  resultSection.classList.remove('active');
+  emptyState.style.display = 'block';
+}
+
+// ==================== COPY TO CLIPBOARD ====================
+document.querySelectorAll('.btn-copy').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const targetId = this.getAttribute('data-target');
+    const text = document.getElementById(targetId).textContent;
+
+    // Try modern clipboard API first, fall back to old method
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(() => {
+        showCopyFeedback(btn);
+      }).catch(() => {
+        fallbackCopy(text, btn);
+      });
+    } else {
+      fallbackCopy(text, btn);
+    }
+  });
+});
+
+function fallbackCopy(text, btn) {
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.style.position = 'fixed';
+  textarea.style.opacity = '0';
+  document.body.appendChild(textarea);
+  textarea.select();
+  try {
+    document.execCommand('copy');
+    showCopyFeedback(btn);
+  } catch(e) {
+    showToast('Không thể copy. Vui lòng copy thủ công.');
+  }
+  document.body.removeChild(textarea);
+}
+
+function showCopyFeedback(btn) {
+  const orig = btn.textContent;
+  btn.textContent = '✓ DONE';
+  btn.classList.add('copied');
+  setTimeout(() => {
+    btn.textContent = orig;
+    btn.classList.remove('copied');
+  }, 1500);
+  showToast('Đã copy vào clipboard!');
+}
+
+// ==================== TOAST ====================
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+// ==================== HISTORY ====================
+function formatTime(timestamp) {
+  const date = new Date(timestamp);
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  return `${hours}:${minutes} · ${day}/${month}`;
+}
+
+function numberFormat(number) {
+  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+}
+
+function displayHistory(history) {
+  if (!history || history.length === 0) {
+    historyList.innerHTML = '<div class="history-empty">Chưa có lịch sử tính toán</div>';
+    btnClearHistory.style.display = 'none';
+    return;
+  }
+
+  btnClearHistory.style.display = 'inline-block';
+  historyList.innerHTML = history.map(item => `
+    <div class="history-item" onclick="loadHistoryItem(${item.amount}, ${item.vat_rate}, ${item.is_tax_included})">
+      <div>
+        <div class="history-amount">${numberFormat(item.amount)} VNĐ</div>
+        <div class="history-meta">${item.is_tax_included ? 'Có thuế' : 'Không thuế'} · VAT ${(item.vat_rate * 100).toFixed(0)}%</div>
+      </div>
+      <div class="history-time">${formatTime(item.timestamp)}</div>
+    </div>
+  `).join('');
+}
+
+function loadHistoryItem(amount, vatRate, isTaxIncluded) {
+  amountInput.value = numberFormat(amount);
+
+  document.querySelectorAll('input[name="vat_rate"]').forEach(radio => {
+    radio.checked = parseFloat(radio.value) === vatRate;
+  });
+
+  document.getElementById('is_tax_included').checked = isTaxIncluded;
+  runCalculation();
+
+  // Scroll to input on mobile
+  if (window.innerWidth < 768) {
+    document.querySelector('.input-card').scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+function loadHistory() {
+  google.script.run
+    .withSuccessHandler(data => {
+      if (data.status === 'success') {
+        displayHistory(data.history);
+      }
+    })
+    .withFailureHandler(err => console.error('History load error:', err))
+    .fetchHistory();
+}
+
+btnClearHistory.addEventListener('click', function() {
+  if (confirm('Bạn có chắc muốn xóa toàn bộ lịch sử?')) {
+    google.script.run
+      .withSuccessHandler(() => {
+        displayHistory([]);
+        showToast('Đã xóa toàn bộ lịch sử');
+      })
+      .withFailureHandler(err => console.error('Clear error:', err))
+      .clearHistoryData();
+  }
+});
+
+// ==================== KEYBOARD SHORTCUT ====================
+document.addEventListener('keydown', function(e) {
+  // Ctrl/Cmd + Enter to calculate
+  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+    e.preventDefault();
+    runCalculation();
+  }
+});
+</script>
+
+</body>
+</html>

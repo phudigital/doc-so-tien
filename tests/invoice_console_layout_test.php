@@ -12,9 +12,9 @@ function assertContains(string $needle, string $haystack, string $message): void
     }
 }
 
-assertContains('console-shell', $html, 'Index page must render the invoice console shell.');
-assertContains('summary-grid', $html, 'Index page must render a dedicated summary grid.');
-assertContains('workspace-grid', $html, 'Index page must render the workspace grid.');
-assertContains('history-panel visible', $html, 'Index page must render the console-style history panel.');
+assertContains('single-workspace', $html, 'Index page must render the single-workspace shell.');
+assertContains('control-bar', $html, 'Index page must render the compact control bar.');
+assertContains('metrics-grid', $html, 'Index page must render the compact metrics grid.');
+assertContains('content-grid', $html, 'Index page must render the lower content grid.');
 
 echo "invoice_console_layout_test passed\n";

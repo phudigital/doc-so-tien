@@ -1,88 +1,97 @@
-const amountInput = document.getElementById("amount");
-const resultArea = document.getElementById("result-area");
-const emptyState = document.getElementById("empty-state");
-const suggestionBox = document.getElementById("suggestion-box");
-const vatRadios = document.getElementsByName("vat_rate");
-const historyList = document.getElementById("history-list");
-const btnClearHistory = document.getElementById("btn-clear-history");
+/* ============================================================
+   QuoteCalc — script.js
+   ============================================================ */
+
+// ── DOM refs ─────────────────────────────────────────────
+const amountInput       = document.getElementById('amount');
+const calcForm          = document.getElementById('calcForm');
+const errorMsg          = document.getElementById('error-msg');
+const emptyState        = document.getElementById('empty-state');
+const resultArea        = document.getElementById('result-area');
+const suggestionBox     = document.getElementById('suggestion-box');
+const historyList       = document.getElementById('history-list');
+const btnClearHistory   = document.getElementById('btn-clear-history');
+const suggestionDropdown = document.getElementById('suggestion-dropdown');
+const vatRadios         = document.getElementsByName('vat_rate');
+
+// ── State ─────────────────────────────────────────────────
 let currentRawSuggestion = 0;
 
-const copyIconSvg = `
-  <svg viewBox="0 0 24 24" aria-hidden="true">
-    <path d="M9 9h10v10H9z"></path>
-    <path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"></path>
-  </svg>
-`;
+// ── SVG icon helpers ──────────────────────────────────────
+const ICON_COPY = `<svg viewBox="0 0 24 24" aria-hidden="true">
+  <rect x="9" y="9" width="13" height="13" rx="2"/>
+  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+</svg>`;
 
-const copiedIconSvg = `
-  <svg viewBox="0 0 24 24" aria-hidden="true">
-    <path d="M5 13l4 4L19 7"></path>
-  </svg>
-`;
+const ICON_CHECK = `<svg viewBox="0 0 24 24" aria-hidden="true">
+  <polyline points="20 6 9 17 4 12"/>
+</svg>`;
 
-function setTextIfExists(id, value) {
-  const node = document.getElementById(id);
-  if (node) {
-    node.innerText = value;
-  }
+// ── Utility: number_format ────────────────────────────────
+function numFmt(number, thousandsSep = '.', decPoint = ',', decimals = 0) {
+  const n = !isFinite(+number) ? 0 : +number;
+  const prec = Math.abs(decimals);
+  const s = (prec ? (Math.round(n * Math.pow(10, prec)) / Math.pow(10, prec)).toFixed(prec) : '' + Math.round(n)).split('.');
+  if (s[0].length > 3) s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, thousandsSep);
+  if ((s[1] || '').length < prec) { s[1] = s[1] || ''; s[1] += new Array(prec - s[1].length + 1).join('0'); }
+  return s.join(decPoint);
 }
 
-// Initialize history on page load
-window.addEventListener("DOMContentLoaded", function () {
-  loadHistory();
-});
+function setTextIfExists(id, value) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = value;
+}
 
-// 1. Format input and show suggestions
-amountInput.addEventListener("input", function (e) {
-  let value = e.target.value.replace(/\D/g, "");
-  
-  // Show suggestions if user types a number
-  if (value && value.length <= 3) {
-    showSuggestions(value);
+// ── Amount input: format & suggestions ───────────────────
+amountInput.addEventListener('input', function (e) {
+  const digits = e.target.value.replace(/\D/g, '');
+
+  // Quick suggestions for short inputs (1-3 digits)
+  if (digits && digits.length <= 3) {
+    showSuggestions(digits);
   } else {
     hideSuggestions();
   }
-  
-  if (value) value = parseInt(value, 10).toLocaleString("vi-VN");
-  e.target.value = value;
+
+  // Format with locale separators
+  e.target.value = digits ? parseInt(digits, 10).toLocaleString('vi-VN') : '';
 });
 
-// Hide suggestions when clicking outside
-document.addEventListener("click", function(e) {
-  const dropdown = document.getElementById("suggestion-dropdown");
-  if (e.target !== amountInput && !dropdown.contains(e.target)) {
+amountInput.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape') hideSuggestions();
+});
+
+// Close dropdown on outside click
+document.addEventListener('click', function (e) {
+  if (e.target !== amountInput && !suggestionDropdown.contains(e.target)) {
     hideSuggestions();
   }
 });
 
 function showSuggestions(num) {
-  const dropdown = document.getElementById("suggestion-dropdown");
-  const baseNum = parseInt(num);
-  
-  if (isNaN(baseNum) || baseNum === 0) {
-    hideSuggestions();
-    return;
-  }
-  
+  const base = parseInt(num);
+  if (isNaN(base) || base === 0) { hideSuggestions(); return; }
+
   const suggestions = [
-    { value: baseNum * 100000, label: "trăm ngàn" },
-    { value: baseNum * 1000000, label: "triệu" },
-    { value: baseNum * 10000000, label: "chục triệu" }
+    { value: base * 100000,    label: 'trăm ngàn' },
+    { value: base * 1000000,   label: 'triệu'     },
+    { value: base * 10000000,  label: 'chục triệu' },
   ];
-  
-  dropdown.innerHTML = suggestions.map(sug => 
-    `<div class="suggestion-item" onclick="applySuggestion(${sug.value})">
-      <strong>${sug.value.toLocaleString('vi-VN')}</strong>
-      <small>(${sug.label})</small>
-    </div>`
+
+  suggestionDropdown.innerHTML = suggestions.map(s =>
+    `<div class="suggestion-item" role="option" tabindex="0"
+          onclick="applySuggestion(${s.value})"
+          onkeydown="if(event.key==='Enter')applySuggestion(${s.value})">
+       <strong>${s.value.toLocaleString('vi-VN')}</strong>
+       <small>${s.label}</small>
+     </div>`
   ).join('');
-  
-  dropdown.classList.add('visible');
+
+  suggestionDropdown.classList.add('visible');
 }
 
 function hideSuggestions() {
-  const dropdown = document.getElementById("suggestion-dropdown");
-  dropdown.classList.remove('visible');
+  suggestionDropdown.classList.remove('visible');
 }
 
 function applySuggestion(value) {
@@ -91,260 +100,246 @@ function applySuggestion(value) {
   amountInput.focus();
 }
 
-// 2. Tự động tính khi đổi Radio VAT
-vatRadios.forEach((radio) => {
-  radio.addEventListener("change", function (e) {
-    if (amountInput.value) runCalculation(e);
+// ── Auto-recalc on VAT change ─────────────────────────────
+vatRadios.forEach(radio => {
+  radio.addEventListener('change', () => {
+    if (amountInput.value) runCalculation();
   });
 });
 
-// 3. Submit Logic
-document.getElementById("calcForm").addEventListener("submit", function (e) {
-  e.preventDefault();
-  runCalculation(e);
+// Recalc on toggle change
+document.getElementById('is_tax_included').addEventListener('change', () => {
+  if (amountInput.value) runCalculation();
 });
 
-function runCalculation(event) {
-  const rawValue = amountInput.value.replace(/\./g, "");
-  const isTaxIncluded = document.getElementById("is_tax_included").checked;
+// ── Form submit ───────────────────────────────────────────
+calcForm.addEventListener('submit', function (e) {
+  e.preventDefault();
+  runCalculation();
+});
 
-  // Lấy giá trị VAT từ radio
-  let selectedVat = 0.08;
-  for (const radio of vatRadios) {
-    if (radio.checked) {
-      selectedVat = radio.value;
-      break;
-    }
-  }
-
-  const errorDiv = document.getElementById("error-msg");
-  suggestionBox.style.display = "none";
+// ── Core: run calculation ─────────────────────────────────
+function runCalculation() {
+  const rawValue = amountInput.value.replace(/\./g, '');
 
   if (!rawValue || isNaN(rawValue)) {
-    if (event && event.type === "submit")
-      showError("Vui lòng nhập số tiền hợp lệ.");
+    showError('Vui lòng nhập số tiền hợp lệ.');
     return;
   }
 
   const amount = parseFloat(rawValue);
   if (amount < 100000 || amount > 100000000000) {
-    showError("Số tiền phải từ 100 ngàn đến 100 tỷ.");
+    showError('Số tiền phải từ 100 ngàn đến 100 tỷ.');
     return;
   }
 
-  errorDiv.style.display = "none";
+  clearError();
+  setBtnLoading(true);
 
-  const params = new URLSearchParams();
-  params.append("action", "convert");
-  params.append("amount", amount);
-  params.append("is_tax_included", isTaxIncluded);
-  params.append("vat_rate", selectedVat);
+  const isTaxIncluded = document.getElementById('is_tax_included').checked;
+  let selectedVat = 0.08;
+  for (const radio of vatRadios) {
+    if (radio.checked) { selectedVat = radio.value; break; }
+  }
 
-  fetch("process.php", {
-    method: "POST",
+  const params = new URLSearchParams({
+    action: 'convert',
+    amount,
+    is_tax_included: isTaxIncluded,
+    vat_rate: selectedVat,
+  });
+
+  fetch('process.php', {
+    method: 'POST',
     body: params,
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
   })
-    .then(async (res) => {
+    .then(async res => {
       const text = await res.text();
-      try {
-        return JSON.parse(text);
-      } catch (e) {
-        console.group("Server Response Error");
-        console.error("JSON Parse Error:", e);
-        console.log("Raw Response received:", text);
-        console.groupEnd();
-        throw new Error(
-          "Dữ liệu từ server không đúng định dạng JSON. Vui lòng kiểm tra Console (F12) để biết chi tiết."
-        );
+      try { return JSON.parse(text); }
+      catch (err) {
+        console.error('JSON parse error:', err, '\nRaw:', text);
+        throw new Error('Server trả về dữ liệu không hợp lệ. Kiểm tra Console để biết thêm.');
       }
     })
-    .then((data) => {
-      if (data.status === "success") {
-        emptyState.style.display = "none";
-        resultArea.style.display = "grid";
-
-        setTextIfExists("res-pre", data.data.pre_tax);
-        setTextIfExists("res-vat", data.data.vat);
-        // Cập nhật nhãn VAT
-        setTextIfExists("lbl-vat", `VAT (${data.data.vat_percent}%):`);
-
-        setTextIfExists("res-post", data.data.post_tax);
-
-        setTextIfExists("txt-sentence", data.data.text_sentence);
-        setTextIfExists("txt-title", data.data.text_title);
-        setTextIfExists("txt-upper", data.data.text_upper);
-        setTextIfExists("txt-en", data.data.text_en);
-
-        if (data.data.suggestion) {
-          const sug = data.data.suggestion;
-          setTextIfExists("sug-amount", sug.amount_fmt + " VNĐ");
-          setTextIfExists("sug-pre", sug.pre_fmt);
-          setTextIfExists("sug-vat", sug.vat_fmt);
-          setTextIfExists("sug-diff", sug.diff + " VNĐ");
-          currentRawSuggestion = sug.amount_raw;
-          suggestionBox.style.display = "block";
-        }
-
-        // Update history display
-        if (data.history) {
-          displayHistory(data.history);
-        }
+    .then(data => {
+      setBtnLoading(false);
+      if (data.status === 'success') {
+        renderResult(data.data);
+        if (data.history) renderHistory(data.history);
       } else {
         showError(data.message);
       }
     })
-    .catch((err) => {
-      console.error("Fetch Error:", err);
-      showError("Lỗi hệ thống: " + err.message);
+    .catch(err => {
+      setBtnLoading(false);
+      console.error('Fetch error:', err);
+      showError('Lỗi hệ thống: ' + err.message);
     });
 }
 
-document
-  .getElementById("btn-apply-suggestion")
-  .addEventListener("click", function () {
-    amountInput.value = currentRawSuggestion.toLocaleString("vi-VN");
-    runCalculation();
-  });
+// ── Render result ─────────────────────────────────────────
+function renderResult(d) {
+  // Show result, hide empty state
+  emptyState.style.display = 'none';
+  resultArea.style.display = 'flex';
 
+  // Metrics
+  setTextIfExists('res-pre',  d.pre_tax);
+  setTextIfExists('res-vat',  d.vat);
+  setTextIfExists('res-post', d.post_tax);
+  setTextIfExists('lbl-vat',  `VAT (${d.vat_percent}%)`);
+
+  // Text outputs
+  setTextIfExists('txt-sentence', d.text_sentence);
+  setTextIfExists('txt-en',       d.text_en);
+
+  // Suggestion
+  if (d.suggestion) {
+    const sug = d.suggestion;
+    setTextIfExists('sug-amount', sug.amount_fmt + ' VNĐ');
+    setTextIfExists('sug-pre',    sug.pre_fmt);
+    setTextIfExists('sug-vat',    sug.vat_fmt);
+    setTextIfExists('sug-diff',   sug.diff + ' VNĐ');
+    currentRawSuggestion = sug.amount_raw;
+    suggestionBox.style.display = 'block';
+  } else {
+    suggestionBox.style.display = 'none';
+  }
+}
+
+// ── Apply suggestion button ───────────────────────────────
+document.getElementById('btn-apply-suggestion').addEventListener('click', () => {
+  amountInput.value = currentRawSuggestion.toLocaleString('vi-VN');
+  // Uncheck tax-included (suggestion is always the total)
+  document.getElementById('is_tax_included').checked = true;
+  runCalculation();
+});
+
+// ── Error helpers ─────────────────────────────────────────
 function showError(msg) {
-  const err = document.getElementById("error-msg");
-  err.innerText = msg;
-  err.style.display = "block";
-  resultArea.style.display = "none";
-  emptyState.style.display = "block";
+  errorMsg.textContent = msg;
+  errorMsg.style.display = 'block';
+  emptyState.style.display = 'flex';
+  resultArea.style.display = 'none';
+  suggestionBox.style.display = 'none';
 }
 
+function clearError() {
+  errorMsg.style.display = 'none';
+}
+
+// ── Button loading state ──────────────────────────────────
+function setBtnLoading(loading) {
+  const btn = document.getElementById('btn-calc');
+  if (!btn) return;
+  btn.disabled = loading;
+  btn.textContent = loading ? 'Đang tính…' : 'Tính nhanh';
+}
+
+// ── Copy to clipboard ─────────────────────────────────────
 function copyToClip(id, btn) {
-  const text = document.getElementById(id).innerText;
+  const el = document.getElementById(id);
+  if (!el) return;
+  const text = el.textContent.trim();
   navigator.clipboard.writeText(text).then(() => {
-    btn.innerHTML = copiedIconSvg;
-    btn.classList.add("copied");
+    btn.innerHTML = ICON_CHECK;
+    btn.classList.add('copied');
     setTimeout(() => {
-      btn.innerHTML = copyIconSvg;
-      btn.classList.remove("copied");
+      btn.innerHTML = ICON_COPY;
+      btn.classList.remove('copied');
     }, 1500);
+  }).catch(() => {
+    // Fallback for older browsers
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.cssText = 'position:fixed;opacity:0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    ta.remove();
+    btn.innerHTML = ICON_CHECK;
+    btn.classList.add('copied');
+    setTimeout(() => { btn.innerHTML = ICON_COPY; btn.classList.remove('copied'); }, 1500);
   });
 }
 
-// ========== HISTORY FUNCTIONS ==========
-
+// ── History ───────────────────────────────────────────────
 function formatTime(timestamp) {
-  const date = new Date(timestamp * 1000);
-  const hours = String(date.getHours()).padStart(2, "0");
-  const minutes = String(date.getMinutes()).padStart(2, "0");
-  const day = date.getDate();
-  const month = date.getMonth() + 1;
-  
-  return `${hours}:${minutes} - ${day}/${month}`;
+  const d = new Date(timestamp * 1000);
+  const hh = String(d.getHours()).padStart(2, '0');
+  const mm = String(d.getMinutes()).padStart(2, '0');
+  const day = d.getDate();
+  const mon = d.getMonth() + 1;
+  return `${hh}:${mm} · ${day}/${mon}`;
 }
 
-function displayHistory(history) {
+function renderHistory(history) {
   if (!history || history.length === 0) {
     historyList.innerHTML = '<div class="history-empty">Chưa có lịch sử</div>';
-    btnClearHistory.style.display = "none";
+    btnClearHistory.style.display = 'none';
     return;
   }
 
-  btnClearHistory.style.display = "inline-block";
-  historyList.innerHTML = history.map((item) => `
-    <div class="history-item" onclick="loadHistoryItem(${item.amount}, ${item.vat_rate}, ${item.is_tax_included ? 'true' : 'false'})">
-      <div class="history-item-content">
-        <div class="history-amount">${number_format(item.amount, 0, ',', '.')} VNĐ</div>
-        <div class="history-meta">
-          ${item.is_tax_included ? 'Có thuế' : 'Không thuế'} • VAT ${(item.vat_rate * 100).toFixed(0)}%
-        </div>
-      </div>
-      <div class="history-time">${formatTime(item.timestamp)}</div>
-    </div>
-  `).join("");
-}
+  btnClearHistory.style.display = 'inline-flex';
 
-function number_format(number, decimals, decPoint, thousandsSep) {
-  number = (number + '').replace(/[^0-9+\-E.]/g, '');
-  var n = !isFinite(+number) ? 0 : +number,
-    prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
-    sep = (typeof thousandsSep === 'undefined') ? ',' : thousandsSep,
-    dec = (typeof decPoint === 'undefined') ? '.' : decPoint,
-    s = '',
-    toFixedFix = function (n, prec) {
-      var k = Math.pow(10, prec);
-      return '' + Math.round(n * k) / k;
-    };
-  s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
-  if (s[0].length > 3) {
-    s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
-  }
-  if ((s[1] || '').length < prec) {
-    s[1] = s[1] || '';
-    s[1] += new Array(prec - s[1].length + 1).join('0');
-  }
-  return s.join(dec);
+  historyList.innerHTML = history.map(item => {
+    const vatLabel = item.is_tax_included ? 'Có thuế' : 'Không thuế';
+    const vatPct   = (item.vat_rate * 100).toFixed(0);
+    return `
+      <div class="history-item"
+           role="button"
+           tabindex="0"
+           aria-label="${numFmt(item.amount)} VNĐ — ${vatLabel} — VAT ${vatPct}%"
+           onclick="loadHistoryItem(${item.amount}, ${item.vat_rate}, ${item.is_tax_included ? 'true' : 'false'})"
+           onkeydown="if(event.key==='Enter'||event.key===' ')loadHistoryItem(${item.amount}, ${item.vat_rate}, ${item.is_tax_included ? 'true' : 'false'})">
+        <div>
+          <div class="history-amount">${numFmt(item.amount)} đ</div>
+          <div class="history-meta">
+            <span>${vatLabel}</span>
+            <span class="history-dot"></span>
+            <span>VAT ${vatPct}%</span>
+          </div>
+        </div>
+        <div class="history-time">${formatTime(item.timestamp)}</div>
+      </div>`;
+  }).join('');
 }
 
 function loadHistoryItem(amount, vatRate, isTaxIncluded) {
-  amountInput.value = number_format(amount, 0, ',', '.');
-  
-  // Set VAT rate
-  vatRadios.forEach((radio) => {
-    radio.checked = parseFloat(radio.value) === vatRate;
-  });
-  
-  // Set tax included checkbox
-  document.getElementById("is_tax_included").checked = isTaxIncluded;
-  
-  // Run calculation
+  amountInput.value = numFmt(amount);
+  vatRadios.forEach(r => { r.checked = parseFloat(r.value) === vatRate; });
+  document.getElementById('is_tax_included').checked = isTaxIncluded;
   runCalculation();
-  
-  // Scroll to top
-  if (window.innerWidth < 1024) {
-    const anchor = document.getElementById("content-start");
-    if (anchor) {
-      anchor.scrollIntoView({ behavior: "smooth" });
-    }
+
+  // On mobile, scroll to top of calculator
+  if (window.innerWidth < 900) {
+    document.getElementById('content-start').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 }
 
 function loadHistory() {
-  const params = new URLSearchParams();
-  params.append("action", "getHistory");
-
-  fetch("process.php", {
-    method: "POST",
-    body: params,
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
+  fetch('process.php', {
+    method: 'POST',
+    body: new URLSearchParams({ action: 'getHistory' }),
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
   })
-    .then((res) => res.json())
-    .then((data) => {
-      if (data.status === "success") {
-        displayHistory(data.history);
-      }
-    })
-    .catch((err) => console.error("History Load Error:", err));
+    .then(res => res.json())
+    .then(data => { if (data.status === 'success') renderHistory(data.history); })
+    .catch(err => console.error('Load history error:', err));
 }
 
-btnClearHistory.addEventListener("click", function () {
-  if (confirm("Bạn có chắc muốn xóa toàn bộ lịch sử?")) {
-    const params = new URLSearchParams();
-    params.append("action", "clearHistory");
-
-    fetch("process.php", {
-      method: "POST",
-      body: params,
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.status === "success") {
-          loadHistory();
-        }
-      })
-      .catch((err) => console.error("Clear History Error:", err));
-  }
+btnClearHistory.addEventListener('click', () => {
+  if (!confirm('Xóa toàn bộ lịch sử?')) return;
+  fetch('process.php', {
+    method: 'POST',
+    body: new URLSearchParams({ action: 'clearHistory' }),
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  })
+    .then(res => res.json())
+    .then(data => { if (data.status === 'success') renderHistory([]); })
+    .catch(err => console.error('Clear history error:', err));
 });
+
+// ── Init ──────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', loadHistory);

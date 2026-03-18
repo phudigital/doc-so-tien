@@ -1,0 +1,236 @@
+[
+    {
+        "timestamp": 1773857191,
+        "amount": 125000000,
+        "vat_rate": 0.1,
+        "is_tax_included": true,
+        "pre_tax": 113636363.63636363,
+        "vat": 11363636.363636374,
+        "post_tax": 125000000
+    },
+    {
+        "timestamp": 1773857191,
+        "amount": 125000000,
+        "vat_rate": 0.08,
+        "is_tax_included": true,
+        "pre_tax": 115740740.74074073,
+        "vat": 9259259.259259269,
+        "post_tax": 125000000
+    },
+    {
+        "timestamp": 1773857190,
+        "amount": 125000000,
+        "vat_rate": 0.1,
+        "is_tax_included": true,
+        "pre_tax": 113636363.63636363,
+        "vat": 11363636.363636374,
+        "post_tax": 125000000
+    },
+    {
+        "timestamp": 1773857189,
+        "amount": 125000000,
+        "vat_rate": 0.08,
+        "is_tax_included": true,
+        "pre_tax": 115740740.74074073,
+        "vat": 9259259.259259269,
+        "post_tax": 125000000
+    },
+    {
+        "timestamp": 1773857188,
+        "amount": 125000000,
+        "vat_rate": 0.1,
+        "is_tax_included": true,
+        "pre_tax": 113636363.63636363,
+        "vat": 11363636.363636374,
+        "post_tax": 125000000
+    },
+    {
+        "timestamp": 1773857176,
+        "amount": 125000000,
+        "vat_rate": 0.08,
+        "is_tax_included": true,
+        "pre_tax": 115740740.74074073,
+        "vat": 9259259.259259269,
+        "post_tax": 125000000
+    },
+    {
+        "timestamp": 1773857176,
+        "amount": 125000000,
+        "vat_rate": 0.08,
+        "is_tax_included": true,
+        "pre_tax": 115740740.74074073,
+        "vat": 9259259.259259269,
+        "post_tax": 125000000
+    },
+    {
+        "timestamp": 1773857172,
+        "amount": 125000000,
+        "vat_rate": 0.08,
+        "is_tax_included": true,
+        "pre_tax": 115740740.74074073,
+        "vat": 9259259.259259269,
+        "post_tax": 125000000
+    },
+    {
+        "timestamp": 1773856994,
+        "amount": 11500000,
+        "vat_rate": 0.08,
+        "is_tax_included": true,
+        "pre_tax": 10648148.148148147,
+        "vat": 851851.8518518526,
+        "post_tax": 11500000
+    },
+    {
+        "timestamp": 1773856974,
+        "amount": 11500000,
+        "vat_rate": 0.08,
+        "is_tax_included": true,
+        "pre_tax": 10648148.148148147,
+        "vat": 851851.8518518526,
+        "post_tax": 11500000
+    },
+    {
+        "timestamp": 1773856216,
+        "amount": 11500000,
+        "vat_rate": 0.08,
+        "is_tax_included": true,
+        "pre_tax": 10648148.148148147,
+        "vat": 851851.8518518526,
+        "post_tax": 11500000
+    },
+    {
+        "timestamp": 1773856216,
+        "amount": 11500000,
+        "vat_rate": 0.08,
+        "is_tax_included": true,
+        "pre_tax": 10648148.148148147,
+        "vat": 851851.8518518526,
+        "post_tax": 11500000
+    },
+    {
+        "timestamp": 1773856216,
+        "amount": 11500000,
+        "vat_rate": 0.08,
+        "is_tax_included": true,
+        "pre_tax": 10648148.148148147,
+        "vat": 851851.8518518526,
+        "post_tax": 11500000
+    },
+    {
+        "timestamp": 1773856216,
+        "amount": 11500000,
+        "vat_rate": 0.08,
+        "is_tax_included": true,
+        "pre_tax": 10648148.148148147,
+        "vat": 851851.8518518526,
+        "post_tax": 11500000
+    },
+    {
+        "timestamp": 1773856216,
+        "amount": 11500000,
+        "vat_rate": 0.08,
+        "is_tax_included": true,
+        "pre_tax": 10648148.148148147,
+        "vat": 851851.8518518526,
+        "post_tax": 11500000
+    },
+    {
+        "timestamp": 1773856215,
+        "amount": 11500000,
+        "vat_rate": 0.08,
+        "is_tax_included": true,
+        "pre_tax": 10648148.148148147,
+        "vat": 851851.8518518526,
+        "post_tax": 11500000
+    },
+    {
+        "timestamp": 1773856215,
+        "amount": 11500000,
+        "vat_rate": 0.08,
+        "is_tax_included": true,
+        "pre_tax": 10648148.148148147,
+        "vat": 851851.8518518526,
+        "post_tax": 11500000
+    },
+    {
+        "timestamp": 1773856215,
+        "amount": 11500000,
+        "vat_rate": 0.08,
+        "is_tax_included": true,
+        "pre_tax": 10648148.148148147,
+        "vat": 851851.8518518526,
+        "post_tax": 11500000
+    },
+    {
+        "timestamp": 1773856215,
+        "amount": 11500000,
+        "vat_rate": 0.08,
+        "is_tax_included": true,
+        "pre_tax": 10648148.148148147,
+        "vat": 851851.8518518526,
+        "post_tax": 11500000
+    },
+    {
+        "timestamp": 1773856211,
+        "amount": 11500000,
+        "vat_rate": 0.08,
+        "is_tax_included": false,
+        "pre_tax": 11500000,
+        "vat": 920000,
+        "post_tax": 12420000
+    },
+    {
+        "timestamp": 1773856211,
+        "amount": 11500000,
+        "vat_rate": 0.08,
+        "is_tax_included": false,
+        "pre_tax": 11500000,
+        "vat": 920000,
+        "post_tax": 12420000
+    },
+    {
+        "timestamp": 1773856210,
+        "amount": 11500000,
+        "vat_rate": 0.08,
+        "is_tax_included": false,
+        "pre_tax": 11500000,
+        "vat": 920000,
+        "post_tax": 12420000
+    },
+    {
+        "timestamp": 1773856094,
+        "amount": 11500000,
+        "vat_rate": 0.08,
+        "is_tax_included": true,
+        "pre_tax": 10648148.148148147,
+        "vat": 851851.8518518526,
+        "post_tax": 11500000
+    },
+    {
+        "timestamp": 1773854511,
+        "amount": 11097000,
+        "vat_rate": 0.08,
+        "is_tax_included": true,
+        "pre_tax": 10275000,
+        "vat": 822000,
+        "post_tax": 11097000
+    },
+    {
+        "timestamp": 1773854501,
+        "amount": 11111000,
+        "vat_rate": 0.08,
+        "is_tax_included": true,
+        "pre_tax": 10287962.962962963,
+        "vat": 823037.0370370373,
+        "post_tax": 11111000
+    },
+    {
+        "timestamp": 1773854499,
+        "amount": 11111000,
+        "vat_rate": 0.08,
+        "is_tax_included": false,
+        "pre_tax": 11111000,
+        "vat": 888880,
+        "post_tax": 11999880
+    }
+]

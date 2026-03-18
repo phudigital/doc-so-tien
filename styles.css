@@ -327,6 +327,7 @@ body {
   align-items: center;
   gap: var(--sp-3);
   flex-wrap: wrap;
+  padding-top: 10px;
 }
 
 /* VAT segmented control */
@@ -678,16 +679,6 @@ body {
   white-space: nowrap;
 }
 
-.suggest-inline-diff {
-  font-size: 0.6875rem;
-  color: var(--text-muted);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  flex-shrink: 1;
-  min-width: 0;
-}
-
 .btn-apply-inline {
   font-size: 0.6875rem;
   font-weight: 700;
@@ -936,7 +927,10 @@ body {
   }
 
   /* Suggestion wraps below on mobile */
-  .controls-spacer { display: none; }
+  .controls-spacer {
+    display: none;
+  }
+
   .suggest-inline {
     max-width: 100%;
     width: 100%;

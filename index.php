@@ -81,7 +81,6 @@ require_once 'process.php';
             <!-- Suggestion inline (hiện khi có kết quả) -->
             <div id="suggestion-box" class="suggest-inline" role="status" aria-live="polite">
               <span class="suggest-inline-amount" id="sug-amount"></span>
-              <span class="suggest-inline-diff" id="sug-diff"></span>
               <button type="button" class="btn-apply-inline" id="btn-apply-suggestion">Dùng</button>
             </div>
 

@@ -187,10 +187,8 @@ function renderResult(d) {
   // Suggestion
   if (d.suggestion) {
     const sug = d.suggestion;
-    setTextIfExists('sug-amount', sug.amount_fmt + ' đ');
-    setTextIfExists('sug-pre',    sug.pre_fmt);
-    setTextIfExists('sug-vat',    sug.vat_fmt);
-    setTextIfExists('sug-diff',   '−' + sug.diff + ' đ');
+    const amountInMillions = Number(sug.amount_raw) / 1000000;
+    setTextIfExists('sug-amount', amountInMillions.toLocaleString('vi-VN', { maximumFractionDigits: 3 }) + ' M.Đ');
     currentRawSuggestion = sug.amount_raw;
     suggestionBox.classList.add('visible');
   } else {

@@ -9,7 +9,7 @@
 | Thông tin | Chi tiết |
 |-----------|----------|
 | **Tên dự án** | QuoteCalc - Tax Calculator & Currency Reader |
-| **Phiên bản hiện tại** | 2.4.4 |
+| **Phiên bản hiện tại** | 3.1.0 |
 | **Ngôn ngữ chính** | PHP, HTML, CSS, JavaScript |
 | **Nền tảng** | Web (PHP + MySQL không yêu cầu) |
 | **Link sử dụng** | https://app.pdl.vn/doc-so-tien/ |
@@ -30,10 +30,15 @@
    - VAT 8% dùng bước 27.000
    - VAT 10% dùng bước 11.000
 
-4. **Lưu Trữ Lịch Sử**
+4. **Lưu Trữ Lịch Sử Gọn Nhẹ**
    - Lưu lịch sử tính toán vào file JSON
-   - Giới hạn 20 bản ghi gần nhất
+   - Giới hạn **10 bản ghi** gần nhất để giao diện tối giản
    - Tự động xóa bản ghi cũ hơn 1 tuần
+
+5. **Thiết Kế UI/UX (Minimalist Dark Mode)**
+   - UI hoàn toàn theo phong cách dark mode sang trọng, tối giản, gọn gàng.
+   - Các gợi ý số tiền hiển thị dạng chips inline ngay dưới ô input.
+   - Gợi ý VAT làm tròn hiển thị inline cùng hàng với nút tính nhanh để tiết kiệm không gian.
 
 ### Cấu Trúc File
 

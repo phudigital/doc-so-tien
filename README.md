@@ -12,10 +12,12 @@ Bạn có thể sử dụng công cụ ngay tại: [https://app.pdl.vn/doc-so-ti
 
 - **Tính Thuế VAT**: Tính thuế xuôi (từ giá trước thuế) hoặc ngược (từ tổng tiền đã bao gồm thuế).
 - **Đọc Số Thành Chữ**: Chuyển đổi số tiền thành văn bản bằng tiếng Việt (với nhiều định dạng: viết hoa đầu câu, đầu mỗi từ, in hoa toàn bộ) và tiếng Anh.
-- **Đề Xuất Làm Tròn**: Tự động gợi ý số tiền thấp hơn gần nhất để tổng tiền, giá trước thuế và VAT cùng ra đơn vị nghìn. Với VAT 8%, hệ thống dùng bước 27.000; với VAT 10%, hệ thống dùng bước 11.000.
-- **Giao Diện Thân Thiện**: Responsive, dễ sử dụng trên desktop và mobile.
-- **Copy Nhanh**: Sao chép kết quả đọc số chỉ với một click.
-- **Hiển Thị Phiên Bản**: Giao diện luôn hiển thị `APP_VERSION` để dễ đối chiếu khi deploy và test.
+- **Đề Xuất Làm Tròn**: Tự động gợi ý số tiền thấp hơn gần nhất để tổng tiền, giá trước thuế và VAT cùng ra đơn vị nghìn (hiển thị inline ngay nút tính). Với VAT 8%, hệ thống dùng bước 27.000; với VAT 10%, hệ thống dùng bước 11.000.
+- **Giao Diện Tối Giản (Dark Mode)**: Giao diện nền tối cực kỳ hiện đại, tối giản, thân thiện, dễ sử dụng trên màn hình máy tính và thiết bị di động.
+- **Tính Năng Gợi Ý Nhanh**: Tự động đưa ra các chip gợi ý (trăm ngàn, triệu, chục triệu) ngay dưới ô nhập số tiền giúp thao tác cực chớp nhoáng thay vì phải gõ nhiều số `0`.
+- **Lưu Trữ Lịch Sử Gọn Nhẹ**: Tự động lưu và hiển thị lại 10 kết quả gần nhất.
+- **Copy Nhanh**: Sao chép kết quả đọc số hay thông số trước thuế/sau thuế chỉ với một click.
+- **Hiển Thị Phiên Bản**: Giao diện luôn hiển thị version để dễ đối chiếu khi deploy và test.
 
 ## Cách Sử Dụng
 
@@ -82,7 +84,7 @@ Khi làm việc bằng agent, hãy đọc thêm `SUPERPOWERS.md` và `agents.md`
 ## Tác Giả
 
 - **Phu Digital Vibe Coding**: Phát triển và bảo trì.
-- Phiên bản hiện tại: 2.4.4
+- Phiên bản hiện tại: 3.1.0
 
 ## Giấy Phép
 

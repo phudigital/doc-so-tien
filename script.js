@@ -7,6 +7,26 @@ const historyList = document.getElementById("history-list");
 const btnClearHistory = document.getElementById("btn-clear-history");
 let currentRawSuggestion = 0;
 
+const copyIconSvg = `
+  <svg viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M9 9h10v10H9z"></path>
+    <path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"></path>
+  </svg>
+`;
+
+const copiedIconSvg = `
+  <svg viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M5 13l4 4L19 7"></path>
+  </svg>
+`;
+
+function setTextIfExists(id, value) {
+  const node = document.getElementById(id);
+  if (node) {
+    node.innerText = value;
+  }
+}
+
 // Initialize history on page load
 window.addEventListener("DOMContentLoaded", function () {
   loadHistory();
@@ -146,28 +166,24 @@ function runCalculation(event) {
         emptyState.style.display = "none";
         resultArea.style.display = "grid";
 
-        document.getElementById("res-pre").innerText = data.data.pre_tax;
-        document.getElementById("res-vat").innerText = data.data.vat;
+        setTextIfExists("res-pre", data.data.pre_tax);
+        setTextIfExists("res-vat", data.data.vat);
         // Cập nhật nhãn VAT
-        document.getElementById(
-          "lbl-vat"
-        ).innerText = `VAT (${data.data.vat_percent}%):`;
+        setTextIfExists("lbl-vat", `VAT (${data.data.vat_percent}%):`);
 
-        document.getElementById("res-post").innerText = data.data.post_tax;
+        setTextIfExists("res-post", data.data.post_tax);
 
-        document.getElementById("txt-sentence").innerText =
-          data.data.text_sentence;
-        document.getElementById("txt-title").innerText = data.data.text_title;
-        document.getElementById("txt-upper").innerText = data.data.text_upper;
-        document.getElementById("txt-en").innerText = data.data.text_en;
+        setTextIfExists("txt-sentence", data.data.text_sentence);
+        setTextIfExists("txt-title", data.data.text_title);
+        setTextIfExists("txt-upper", data.data.text_upper);
+        setTextIfExists("txt-en", data.data.text_en);
 
         if (data.data.suggestion) {
           const sug = data.data.suggestion;
-          document.getElementById("sug-amount").innerText =
-            sug.amount_fmt + " VNĐ";
-          document.getElementById("sug-pre").innerText = sug.pre_fmt;
-          document.getElementById("sug-vat").innerText = sug.vat_fmt;
-          document.getElementById("sug-diff").innerText = sug.diff + " VNĐ";
+          setTextIfExists("sug-amount", sug.amount_fmt + " VNĐ");
+          setTextIfExists("sug-pre", sug.pre_fmt);
+          setTextIfExists("sug-vat", sug.vat_fmt);
+          setTextIfExists("sug-diff", sug.diff + " VNĐ");
           currentRawSuggestion = sug.amount_raw;
           suggestionBox.style.display = "block";
         }
@@ -191,12 +207,6 @@ document
   .addEventListener("click", function () {
     amountInput.value = currentRawSuggestion.toLocaleString("vi-VN");
     runCalculation();
-    if (window.innerWidth < 992) {
-      const anchor = document.getElementById("content-start");
-      if (anchor) {
-        anchor.scrollIntoView({ behavior: "smooth" });
-      }
-    }
   });
 
 function showError(msg) {
@@ -210,11 +220,10 @@ function showError(msg) {
 function copyToClip(id, btn) {
   const text = document.getElementById(id).innerText;
   navigator.clipboard.writeText(text).then(() => {
-    const originText = btn.innerText;
-    btn.innerText = "ĐÃ COPY";
+    btn.innerHTML = copiedIconSvg;
     btn.classList.add("copied");
     setTimeout(() => {
-      btn.innerText = originText;
+      btn.innerHTML = copyIconSvg;
       btn.classList.remove("copied");
     }, 1500);
   });

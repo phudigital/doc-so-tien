@@ -138,7 +138,7 @@ body {
 
 .control-bar {
     display: grid;
-    grid-template-columns: minmax(0, 1.6fr) auto auto auto;
+    grid-template-columns: minmax(0, 1.8fr) minmax(0, 1fr) auto;
     gap: 12px;
     align-items: end;
     padding: 14px;
@@ -228,9 +228,19 @@ input[type="text"]:focus {
     color: var(--muted);
 }
 
-.vat-group {
-    display: inline-flex;
-    gap: 8px;
+.control-inline {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.vat-toggle {
+    display: inline-grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 4px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: var(--surface);
 }
 
 .vat-option,
@@ -238,14 +248,37 @@ input[type="text"]:focus {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    min-height: 54px;
+    min-height: 46px;
     padding: 0 14px;
-    border: 1px solid var(--line);
     border-radius: 16px;
-    background: var(--surface);
     font-size: 14px;
     font-weight: 600;
     white-space: nowrap;
+}
+
+.vat-option {
+    position: relative;
+    justify-content: center;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+.vat-option input[type="radio"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.vat-option:has(input:checked) {
+    background: linear-gradient(135deg, rgba(15, 118, 110, 0.12), rgba(29, 78, 216, 0.12));
+    color: var(--accent);
+}
+
+.checkbox-group {
+    border: 1px solid var(--line);
+    background: var(--surface);
 }
 
 input[type="radio"],
@@ -255,7 +288,7 @@ input[type="checkbox"] {
 
 .btn-submit,
 .btn-apply,
-.btn-copy,
+.btn-copy-inline,
 .btn-clear-history {
     border: none;
     cursor: pointer;
@@ -346,6 +379,13 @@ input[type="checkbox"] {
     border: 1px solid var(--line);
     border-radius: 18px;
     background: var(--surface-2);
+}
+
+.metric-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
 }
 
 .metric-card-strong {
@@ -442,53 +482,64 @@ input[type="checkbox"] {
     flex-direction: column;
 }
 
-.copy-grid {
+.copy-list {
     margin-top: 12px;
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
     flex: 1;
 }
 
-.copy-row {
+.copy-line {
     position: relative;
 }
 
-.copy-row label {
-    display: block;
-    margin-bottom: 6px;
-    color: var(--muted);
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-}
-
 .text-box {
-    min-height: 76px;
-    padding: 12px 74px 12px 12px;
+    min-height: 68px;
+    padding: 12px 60px 12px 12px;
     border: 1px solid var(--line);
     border-radius: 14px;
     background: var(--surface-2);
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     color: var(--text);
     font-size: 14px;
     line-height: 1.45;
 }
 
-.btn-copy {
+.btn-copy-inline {
     position: absolute;
     right: 8px;
-    bottom: 8px;
-    padding: 7px 9px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
     border-radius: 10px;
     background: #1f2937;
     color: #fff;
-    font-size: 11px;
+    font-size: 0;
 }
 
-.btn-copy.copied {
+.copy-metric {
+    position: static;
+    transform: none;
+    flex-shrink: 0;
+}
+
+.btn-copy-inline svg {
+    width: 17px;
+    height: 17px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.btn-copy-inline.copied {
     background: var(--accent);
 }
 
@@ -559,8 +610,15 @@ input[type="checkbox"] {
 .history-item:hover,
 .btn-submit:hover,
 .btn-apply:hover,
-.btn-copy:hover,
 .btn-clear-history:hover {
+    transform: translateY(-1px);
+}
+
+.btn-copy-inline:hover {
+    transform: translateY(calc(-50% - 1px));
+}
+
+.copy-metric:hover {
     transform: translateY(-1px);
 }
 
@@ -582,12 +640,7 @@ input[type="checkbox"] {
 
 @media (max-width: 1180px) {
     .control-bar {
-        grid-template-columns: minmax(0, 1fr) auto;
-    }
-
-    .control-group,
-    .checkbox-group {
-        grid-column: span 1;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .workspace-layout {
@@ -614,8 +667,7 @@ input[type="checkbox"] {
     .workspace-brand,
     .control-bar,
     .metrics-grid,
-    .content-grid,
-    .copy-grid {
+    .content-grid {
         grid-template-columns: 1fr;
         flex-direction: column;
     }
@@ -631,8 +683,9 @@ input[type="checkbox"] {
         min-height: auto;
     }
 
-    .copy-grid {
-        display: grid;
+    .control-inline {
+        justify-content: space-between;
+        flex-wrap: nowrap;
     }
 
     .text-box {

@@ -48,22 +48,24 @@ require_once 'process.php';
                 <div id="suggestion-dropdown" class="suggestion-dropdown"></div>
             </div>
 
-            <div class="control-group">
-                <span class="input-label">VAT</span>
-                <div class="vat-group">
-                    <label class="vat-option">
-                        <input type="radio" name="vat_rate" value="0.08" checked> 8%
-                    </label>
-                    <label class="vat-option">
-                        <input type="radio" name="vat_rate" value="0.10"> 10%
+            <div class="control-group compact-controls">
+                <span class="input-label">VAT & chế độ</span>
+                <div class="control-inline">
+                    <div class="vat-toggle" role="radiogroup" aria-label="VAT">
+                        <label class="vat-option">
+                            <input type="radio" name="vat_rate" value="0.08" checked> 8%
+                        </label>
+                        <label class="vat-option">
+                            <input type="radio" name="vat_rate" value="0.10"> 10%
+                        </label>
+                    </div>
+
+                    <label class="checkbox-group">
+                        <input type="checkbox" id="is_tax_included">
+                        <span>Đã gồm VAT</span>
                     </label>
                 </div>
             </div>
-
-            <label class="checkbox-group">
-                <input type="checkbox" id="is_tax_included">
-                <span>Đã bao gồm VAT</span>
-            </label>
 
             <button type="submit" class="btn-submit">Xem Kết Quả</button>
         </form>
@@ -82,15 +84,30 @@ require_once 'process.php';
                     <section class="panel metrics-panel">
                         <div class="metrics-grid">
                             <div class="metric-card">
-                                <span class="metric-label">Trước thuế</span>
+                                <div class="metric-head">
+                                    <span class="metric-label">Trước thuế</span>
+                                    <button class="btn-copy-inline copy-metric" aria-label="Copy trước thuế" onclick="copyToClip('res-pre', this)">
+                                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 9h10v10H9z"></path><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"></path></svg>
+                                    </button>
+                                </div>
                                 <strong class="metric-value" id="res-pre"></strong>
                             </div>
                             <div class="metric-card">
-                                <span class="metric-label" id="lbl-vat">VAT (8%)</span>
+                                <div class="metric-head">
+                                    <span class="metric-label" id="lbl-vat">VAT (8%)</span>
+                                    <button class="btn-copy-inline copy-metric" aria-label="Copy VAT" onclick="copyToClip('res-vat', this)">
+                                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 9h10v10H9z"></path><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"></path></svg>
+                                    </button>
+                                </div>
                                 <strong class="metric-value" id="res-vat"></strong>
                             </div>
                             <div class="metric-card metric-card-strong">
-                                <span class="metric-label">Tổng thanh toán</span>
+                                <div class="metric-head">
+                                    <span class="metric-label">Tổng thanh toán</span>
+                                    <button class="btn-copy-inline copy-metric" aria-label="Copy tổng thanh toán" onclick="copyToClip('res-post', this)">
+                                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 9h10v10H9z"></path><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"></path></svg>
+                                    </button>
+                                </div>
                                 <strong class="metric-value" id="res-post"></strong>
                             </div>
                         </div>
@@ -116,28 +133,20 @@ require_once 'process.php';
                         </section>
 
                         <section class="panel output-panel">
-                            <p class="panel-kicker">Nội dung copy</p>
-                            <h2 class="panel-title">Đọc số nhanh</h2>
-                            <div class="copy-grid">
-                                <div class="copy-row">
-                                    <label>Viết hoa đầu câu</label>
+                            <p class="panel-kicker">Đọc số nhanh</p>
+                            <h2 class="panel-title">2 phiên bản dùng nhiều nhất</h2>
+                            <div class="copy-list">
+                                <div class="copy-line">
                                     <div class="text-box" id="txt-sentence"></div>
-                                    <button class="btn-copy" onclick="copyToClip('txt-sentence', this)">COPY</button>
+                                    <button class="btn-copy-inline" aria-label="Copy viết hoa đầu câu" onclick="copyToClip('txt-sentence', this)">
+                                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 9h10v10H9z"></path><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"></path></svg>
+                                    </button>
                                 </div>
-                                <div class="copy-row">
-                                    <label>Viết hoa đầu mỗi từ</label>
-                                    <div class="text-box" id="txt-title"></div>
-                                    <button class="btn-copy" onclick="copyToClip('txt-title', this)">COPY</button>
-                                </div>
-                                <div class="copy-row">
-                                    <label>In hoa toàn bộ</label>
-                                    <div class="text-box" id="txt-upper"></div>
-                                    <button class="btn-copy" onclick="copyToClip('txt-upper', this)">COPY</button>
-                                </div>
-                                <div class="copy-row">
-                                    <label>Tiếng Anh</label>
+                                <div class="copy-line">
                                     <div class="text-box" id="txt-en"></div>
-                                    <button class="btn-copy" onclick="copyToClip('txt-en', this)">COPY</button>
+                                    <button class="btn-copy-inline" aria-label="Copy tiếng Anh" onclick="copyToClip('txt-en', this)">
+                                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 9h10v10H9z"></path><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"></path></svg>
+                                    </button>
                                 </div>
                             </div>
                         </section>
@@ -156,7 +165,7 @@ require_once 'process.php';
                     </div>
                     <button class="btn-clear-history" id="btn-clear-history" style="display: none;">Xóa</button>
                 </div>
-                <p class="history-note">Mở lại nhanh các lần tính gần nhất.</p>
+                <p class="history-note">Lưu tối đa 50 kết quả và cuộn trong khung này.</p>
                 <div class="history-list" id="history-list">
                     <div class="history-empty">Chưa có lịch sử</div>
                 </div>

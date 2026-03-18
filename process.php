@@ -75,8 +75,8 @@ function saveToHistory($amount, $vat_rate, $is_tax_included, $result) {
     
     array_unshift($history, $new_entry);
     
-    // Keep only last 20 entries
-    $history = array_slice($history, 0, 20);
+    // Keep only last 50 entries
+    $history = array_slice($history, 0, 50);
     
     // Save to file
     file_put_contents($history_file, json_encode($history, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));

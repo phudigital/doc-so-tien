@@ -44,11 +44,10 @@
 
 ```text
 doc-so-tien/
-├── index.php          # File chính (HTML + PHP includes)
+├── index.php          # File chính (HTML + PHP includes + Config APP_VERSION)
 ├── process.php        # Backend xử lý (API, tính toán, đọc số)
 ├── script.js          # Frontend JavaScript (AJAX, validation)
 ├── styles.css         # Giao diện CSS
-├── version.php        # Quản lý phiên bản (APP_VERSION)
 ├── history.json       # File lưu lịch sử (tự động tạo)
 ├── thumbnail.jpg      # Ảnh thumbnail
 ├── agents.md          # Tài liệu dự án và quy tắc phát triển
@@ -75,7 +74,7 @@ doc-so-tien/
    - Sử dụng format: `type: description` (ví dụ: `feat: thêm chức năng x`, `fix: sửa lỗi y`)
 
 2. **Quản lý phiên bản**
-   - Cập nhật `APP_VERSION` trong file `version.php` khi có thay đổi lớn.
+   - Cập nhật `APP_VERSION` ngay trong file `index.php` khi có thay đổi lớn.
    - Format phiên bản: `MAJOR.MINOR.PATCH`
 
 3. **Cache busting**

@@ -1,5 +1,10 @@
 <?php
-require_once 'version.php';
+/**
+ * Version Management
+ * Increment this version number to clear browser cache for CSS and JS files
+ */
+define('APP_VERSION', '3.1.0');
+
 require_once 'process.php';
 ?>
 <!DOCTYPE html>
@@ -120,10 +125,7 @@ require_once 'process.php';
         <div class="metrics-row">
           <div class="metric-card">
             <div class="metric-head">
-              <span class="metric-label">
-                <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px; vertical-align:-3px"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M12 12h.01"/><path d="M17 12h.01"/><path d="M7 12h.01"/></svg>
-                Trước thuế
-              </span>
+              <span class="metric-label">Trước thuế</span>
               <button class="btn-copy" aria-label="Copy số trước thuế" onclick="copyToClip('res-pre', this)">
                 <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
               </button>
@@ -133,10 +135,7 @@ require_once 'process.php';
 
           <div class="metric-card">
             <div class="metric-head">
-              <span class="metric-label" id="lbl-vat">
-                <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px; vertical-align:-3px"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>
-                VAT (8%)
-              </span>
+              <span class="metric-label" id="lbl-vat">VAT (8%)</span>
               <button class="btn-copy" aria-label="Copy thuế VAT" onclick="copyToClip('res-vat', this)">
                 <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
               </button>
@@ -146,10 +145,7 @@ require_once 'process.php';
 
           <div class="metric-card metric-card--primary">
             <div class="metric-head">
-              <span class="metric-label">
-                <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px; vertical-align:-3px"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                Tổng thanh toán
-              </span>
+              <span class="metric-label">Tổng thanh toán</span>
               <button class="btn-copy" aria-label="Copy tổng thanh toán" onclick="copyToClip('res-post', this)">
                 <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
               </button>
@@ -160,10 +156,7 @@ require_once 'process.php';
 
         <!-- Text output card -->
         <div class="output-card">
-          <div class="card-label">
-            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px; vertical-align:-3px"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-            Đọc số thành chữ
-          </div>
+          <div class="card-label">Đọc số thành chữ</div>
           <div class="output-row">
             <span class="output-tag">VI</span>
             <div class="output-text" id="txt-sentence"></div>

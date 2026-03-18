@@ -48,7 +48,7 @@ Bạn có thể sử dụng công cụ ngay tại: [https://app.pdl.vn/doc-so-ti
 3. Mở trình duyệt và truy cập: `http://localhost:8000/index.php`
 
 ### Cấu Trúc File
-- `index.php`: File chính (HTML + include logic).
+- `index.php`: File chính (HTML + PHP includes + Config APP_VERSION).
 - `process.php`: Xử lý backend PHP (tính toán, API JSON).
 - `styles.css`: Styling CSS.
 - `script.js`: JavaScript frontend (AJAX, validation).

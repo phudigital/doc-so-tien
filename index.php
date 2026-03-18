@@ -31,6 +31,9 @@ require_once 'process.php';
             </div>
             <h1 class="hero-title">QuoteCalc<span>+</span></h1>
             <p class="hero-subtitle">Tính VAT và đọc số tiền với giao diện hiện đại, dễ sử dụng.</p>
+            <div class="hero-meta">
+                <span class="version-chip">Phiên bản <?php echo APP_VERSION; ?></span>
+            </div>
 
             <form id="calcForm" class="hero-form">
                 <div class="hero-primary-row">

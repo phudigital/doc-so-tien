@@ -83,6 +83,26 @@ body {
     font-size: 18px;
 }
 
+.hero-meta {
+    margin-top: 16px;
+}
+
+.version-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 34px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(51, 209, 122, 0.35);
+    background: rgba(255, 255, 255, 0.72);
+    color: #0f766e;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    box-shadow: 0 4px 12px rgba(51, 209, 122, 0.12);
+}
+
 .hero-form {
     margin-top: 30px;
     background: var(--bg-soft);

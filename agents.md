@@ -9,7 +9,7 @@
 | Thông tin | Chi tiết |
 |-----------|----------|
 | **Tên dự án** | QuoteCalc - Tax Calculator & Currency Reader |
-| **Phiên bản hiện tại** | 2.1.1 |
+| **Phiên bản hiện tại** | 2.4.4 |
 | **Ngôn ngữ chính** | PHP, HTML, CSS, JavaScript |
 | **Nền tảng** | Web (PHP + MySQL không yêu cầu) |
 | **Link sử dụng** | https://app.pdl.vn/doc-so-tien/ |
@@ -26,8 +26,9 @@
    - Tiếng Anh
 
 3. **Đề Xuất Làm Tròn Thông Minh**
-   - Gợi ý số tiền gần nhất chia hết cho 13.500 (VAT 8%)
-   - Gợi ý số tiền gần nhất chia hết cho 11.000 (VAT 10%)
+   - Gợi ý số tiền thấp hơn gần nhất để tổng tiền, giá trước thuế và VAT cùng ra đơn vị nghìn
+   - VAT 8% dùng bước 27.000
+   - VAT 10% dùng bước 11.000
 
 4. **Lưu Trữ Lịch Sử**
    - Lưu lịch sử tính toán vào file JSON
@@ -36,17 +37,18 @@
 
 ### Cấu Trúc File
 
-```
+```text
 doc-so-tien/
 ├── index.php          # File chính (HTML + PHP includes)
 ├── process.php        # Backend xử lý (API, tính toán, đọc số)
-├── script.js         # Frontend JavaScript (AJAX, validation)
-├── styles.css        # Giao diện CSS
-├── version.php       # Quản lý phiên bản (APP_VERSION)
-├── history.json      # File lưu lịch sử (tự động tạo)
-├── thumbnail.jpg     # Ảnh thumbnail
-├── agents.md         # File này - tài liệu dự án
-└── README.md         # Tài liệu hướng dẫn sử dụng
+├── script.js          # Frontend JavaScript (AJAX, validation)
+├── styles.css         # Giao diện CSS
+├── version.php        # Quản lý phiên bản (APP_VERSION)
+├── history.json       # File lưu lịch sử (tự động tạo)
+├── thumbnail.jpg      # Ảnh thumbnail
+├── agents.md          # Tài liệu dự án và quy tắc phát triển
+├── SUPERPOWERS.md     # Chỉ dẫn ngắn cho agent/Codex
+└── README.md          # Tài liệu hướng dẫn sử dụng
 ```
 
 ### Công Nghệ Sử Dụng
@@ -69,11 +71,23 @@ doc-so-tien/
 
 2. **Quản lý phiên bản**
    - Cập nhật `APP_VERSION` trong file `version.php` khi có thay đổi lớn.
-   - Format phiên bản: `MAJOR.MINOR.PATCH` (ví dụ: 2.1.1 → 2.1.2)
+   - Format phiên bản: `MAJOR.MINOR.PATCH`
 
 3. **Cache busting**
    - File CSS và JS trong `index.php` đã được setup với version parameter (`?v=APP_VERSION`).
    - Khi cập nhật version, trình duyệt sẽ tự động tải lại file mới.
+
+### Workflow Superpowers
+
+Project này dùng Superpowers làm workflow mặc định khi phát triển bằng Codex hoặc agent.
+
+1. Bắt đầu với `using-superpowers` để kiểm tra skill cần dùng trong turn hiện tại.
+2. Dùng `brainstorming` trước khi thêm tính năng mới, đổi giao diện, hoặc thay đổi hành vi.
+3. Dùng `systematic-debugging` trước khi sửa bug hoặc điều chỉnh công thức tính.
+4. Dùng `test-driven-development` cho các thay đổi liên quan đến logic VAT, làm tròn, hoặc dữ liệu trả về.
+5. Dùng `verification-before-completion` trước khi kết luận đã xong, commit, hoặc báo deploy.
+
+Nếu cần chỉ dẫn ngắn riêng cho agent, đọc thêm `SUPERPOWERS.md` ở thư mục gốc của project.
 
 ### Hướng Dẫn Đóng Góp
 

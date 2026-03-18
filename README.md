@@ -12,16 +12,17 @@ Bạn có thể sử dụng công cụ ngay tại: [https://app.pdl.vn/doc-so-ti
 
 - **Tính Thuế VAT**: Tính thuế xuôi (từ giá trước thuế) hoặc ngược (từ tổng tiền đã bao gồm thuế).
 - **Đọc Số Thành Chữ**: Chuyển đổi số tiền thành văn bản bằng tiếng Việt (với nhiều định dạng: viết hoa đầu câu, đầu mỗi từ, in hoa toàn bộ) và tiếng Anh.
-- **Đề Xuất Làm Tròn**: Tự động gợi ý số tiền gần nhất chia hết cho 13.500 (VAT 8%) hoặc 11.000 (VAT 10%) để giá chẵn nghìn.
+- **Đề Xuất Làm Tròn**: Tự động gợi ý số tiền thấp hơn gần nhất để tổng tiền, giá trước thuế và VAT cùng ra đơn vị nghìn. Với VAT 8%, hệ thống dùng bước 27.000; với VAT 10%, hệ thống dùng bước 11.000.
 - **Giao Diện Thân Thiện**: Responsive, dễ sử dụng trên desktop và mobile.
 - **Copy Nhanh**: Sao chép kết quả đọc số chỉ với một click.
+- **Hiển Thị Phiên Bản**: Giao diện luôn hiển thị `APP_VERSION` để dễ đối chiếu khi deploy và test.
 
 ## Cách Sử Dụng
 
 1. **Nhập Số Tiền**: Gõ số tiền vào ô input (tự động format theo định dạng Việt Nam, ví dụ: 10.000.000).
 2. **Chọn Mức Thuế**: Chọn 8% hoặc 10% VAT.
 3. **Đánh Dấu Nếu Đã Bao Gồm Thuế**: Tick vào checkbox nếu số nhập đã có thuế.
-4. **Nhấn "Xử Lý & Đọc Số"**: Xem kết quả tính toán, đọc số, và đề xuất (nếu có).
+4. **Nhấn "Xem Kết Quả"**: Xem kết quả tính toán, đọc số, và đề xuất (nếu có).
 5. **Copy Kết Quả**: Nhấn nút "COPY" bên cạnh văn bản đọc số.
 
 ## Cài Đặt & Chạy
@@ -49,6 +50,8 @@ Bạn có thể sử dụng công cụ ngay tại: [https://app.pdl.vn/doc-so-ti
 - `process.php`: Xử lý backend PHP (tính toán, API JSON).
 - `styles.css`: Styling CSS.
 - `script.js`: JavaScript frontend (AJAX, validation).
+- `agents.md`: Tài liệu phát triển và quy ước nội bộ của dự án.
+- `SUPERPOWERS.md`: Chỉ dẫn ngắn cho Codex/agent khi làm việc trực tiếp trong repo.
 
 ## Công Nghệ Sử Dụng
 
@@ -62,12 +65,24 @@ Bạn có thể sử dụng công cụ ngay tại: [https://app.pdl.vn/doc-so-ti
 - Nhập: 1.000.000 VNĐ, VAT 8%, chưa bao gồm thuế.
 - Kết quả: Trước thuế 1.000.000 VNĐ, VAT 80.000 VNĐ, Tổng 1.080.000 VNĐ.
 - Đọc số: "Một triệu đồng" (tiếng Việt), "One million VND" (tiếng Anh).
-- Đề xuất: Nếu gần 1.080.000, gợi ý làm tròn xuống 1.062.500 để chẵn nghìn.
+- Đề xuất: Hệ thống ưu tiên số gợi ý giúp tổng tiền, giá trước thuế và VAT cùng ra đơn vị nghìn.
+
+## Workflow Superpowers
+
+Project này dùng workflow Superpowers để giữ nhịp phát triển ổn định khi làm việc với Codex.
+
+- Luôn bắt đầu bằng `using-superpowers` để kiểm tra skill phù hợp trước khi hành động.
+- Dùng `brainstorming` trước khi thêm tính năng, đổi UI, hoặc thay đổi hành vi.
+- Dùng `systematic-debugging` trước khi sửa bug hoặc xử lý kết quả tính toán sai.
+- Dùng `test-driven-development` cho thay đổi hành vi quan trọng, đặc biệt là logic VAT và gợi ý.
+- Dùng `verification-before-completion` trước khi kết luận đã xong, commit, hoặc báo deploy.
+
+Khi làm việc bằng agent, hãy đọc thêm `SUPERPOWERS.md` và `agents.md` ở thư mục gốc để bám đúng quy ước của project.
 
 ## Tác Giả
 
 - **Phu Digital Vibe Coding**: Phát triển và bảo trì.
-- Phiên bản: 1.0
+- Phiên bản hiện tại: 2.4.4
 
 ## Giấy Phép
 

@@ -166,8 +166,10 @@ require_once 'process.php';
                     <button class="btn-clear-history" id="btn-clear-history" style="display: none;">Xóa</button>
                 </div>
                 <p class="history-note">Lưu tối đa 50 kết quả và cuộn trong khung này.</p>
-                <div class="history-list" id="history-list">
-                    <div class="history-empty">Chưa có lịch sử</div>
+                <div class="history-scroll-shell">
+                    <div class="history-list" id="history-list">
+                        <div class="history-empty">Chưa có lịch sử</div>
+                    </div>
                 </div>
             </aside>
         </div>

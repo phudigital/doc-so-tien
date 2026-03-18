@@ -28,6 +28,7 @@ assertContains('vat-toggle', $html, 'Index page must render the VAT segmented to
 assertContains('copy-list', $html, 'Index page must render the compact copy list.');
 assertContains('btn-copy-inline', $html, 'Index page must render icon-style copy buttons for summary and quick-copy areas.');
 assertContains('copy-metric', $html, 'Index page must render copy buttons for the summary metrics.');
+assertContains('history-scroll-shell', $html, 'Index page must render a dedicated history scroll shell.');
 assertNotContains('id="txt-title"', $html, 'Index page must hide the title-case quick copy item.');
 assertNotContains('id="txt-upper"', $html, 'Index page must hide the uppercase quick copy item.');
 

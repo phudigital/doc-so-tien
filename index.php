@@ -19,7 +19,7 @@ require_once 'process.php';
 <body>
 <!-- Mặc định ẩn nội dung cho tới khi check theme xong để chống chớp trắng/đen -->
 <script>
-  if (localStorage.getItem('theme') === 'light' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: light)').matches)) {
+  if (localStorage.getItem('theme') === 'light') {
     document.documentElement.setAttribute('data-theme', 'light');
   }
 </script>

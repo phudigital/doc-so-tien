@@ -1,7 +1,7 @@
 <?php
 /**
  * Currency Reader Backend
- * Version: 1.3
+ * Version: 1.4
  */
 
 // Báo lỗi chi tiết để debug local

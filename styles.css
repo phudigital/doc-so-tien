@@ -1,6 +1,6 @@
 /* ============================================================
    QuoteCalc — Minimalist Dark UI
-   Version: 3.0.0
+   Version: 3.1.0
    ============================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
@@ -677,6 +677,16 @@ body {
   color: #fde68a;
   letter-spacing: -0.01em;
   white-space: nowrap;
+}
+
+.suggest-inline-diff {
+  font-size: 0.6875rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 1;
+  min-width: 0;
 }
 
 .btn-apply-inline {

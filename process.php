@@ -17,6 +17,36 @@ if (!defined('MB_CASE_TITLE')) define('MB_CASE_TITLE', 2);
 $history_file = __DIR__ . '/history.json';
 $one_week_ago = time() - (7 * 24 * 60 * 60); // 1 week in seconds
 
+function roundDownToThousand($amount) {
+    return (int) (floor($amount / 1000) * 1000);
+}
+
+function roundToNearestThousand($amount) {
+    return (int) (round($amount / 1000) * 1000);
+}
+
+function buildRoundedSuggestion($amount, $vat_rate) {
+    $step = ($vat_rate == 0.10) ? 11000 : 13500;
+    $steps_count = floor($amount / $step);
+    $base_suggested_total = $steps_count * $step;
+    $suggested_total = roundDownToThousand($base_suggested_total);
+
+    if ($suggested_total >= $amount || $suggested_total < 100000) {
+        return null;
+    }
+
+    $suggested_vat = roundToNearestThousand($suggested_total - ($suggested_total / (1 + $vat_rate)));
+    $suggested_pre_tax = $suggested_total - $suggested_vat;
+
+    return [
+        'amount_raw' => $suggested_total,
+        'amount_fmt' => number_format($suggested_total, 0, ',', '.'),
+        'pre_fmt'    => number_format($suggested_pre_tax, 0, ',', '.'),
+        'vat_fmt'    => number_format($suggested_vat, 0, ',', '.'),
+        'diff'       => number_format($amount - $suggested_total, 0, ',', '.')
+    ];
+}
+
 function loadHistory() {
     global $history_file;
     if (!file_exists($history_file)) {
@@ -103,22 +133,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
             $post_tax = $amount;
             $pre_tax  = $amount / (1 + $vat_rate);
             $vat_amount = $post_tax - $pre_tax;
-
-            $step = ($vat_rate == 0.10) ? 11000 : 13500;
-            $steps_count = floor($amount / $step); 
-            $suggested_total = $steps_count * $step;
-
-            if ($suggested_total != $amount && $suggested_total >= 100000) {
-                $s_pre = $suggested_total / (1 + $vat_rate);
-                $s_vat = $suggested_total - $s_pre;
-                $suggestion = [
-                    'amount_raw' => $suggested_total,
-                    'amount_fmt' => number_format($suggested_total, 0, ',', '.'),
-                    'pre_fmt'    => number_format($s_pre, 0, ',', '.'),
-                    'vat_fmt'    => number_format($s_vat, 0, ',', '.'),
-                    'diff'       => number_format($amount - $suggested_total, 0, ',', '.')
-                ];
-            }
+            $suggestion = buildRoundedSuggestion($amount, $vat_rate);
         } else {
             $pre_tax = $amount;
             $vat_amount = $amount * $vat_rate;
@@ -149,7 +164,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
                         if ($units) $string .= ' ' . ($units==1 ? 'mốt' : ($units==5 ? 'lăm' : $dictionary[$units]));
                         break;
                     case $number < 1000:
-                        $hundreds  = $number / 100;
+                        $hundreds  = (int) floor($number / 100);
                         $remainder = $number % 100;
                         $string = $dictionary[$hundreds] . ' ' . $dictionary[100];
                         if ($remainder) {
@@ -191,7 +206,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
                         $string = $dictionary[$tens]; if ($units) $string .= $hyphen . $dictionary[$units];
                         break;
                     case $number < 1000:
-                        $hundreds = $number / 100; $remainder = $number % 100;
+                        $hundreds = (int) floor($number / 100); $remainder = $number % 100;
                         $string = $dictionary[$hundreds] . ' ' . $dictionary[100];
                         if ($remainder) $string .= $conjunction . convert_number_to_words_en($remainder);
                         break;
@@ -226,8 +241,9 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
             }
         }
 
-        $text_vi_raw = readNumberVi($amount) . ' đồng';
-        $text_en_raw = convert_number_to_words_en($amount) . ' VND';
+        $amount_for_words = (int) round($amount);
+        $text_vi_raw = readNumberVi($amount_for_words) . ' đồng';
+        $text_en_raw = convert_number_to_words_en($amount_for_words) . ' VND';
 
         $response_data = [
             'status' => 'success',

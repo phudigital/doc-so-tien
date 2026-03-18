@@ -43,22 +43,17 @@ function assertTrue(bool $condition, string $message): void
     }
 }
 
-function assertFormattedThousand(string $amount, string $message): void
-{
-    $normalized = (int) str_replace('.', '', $amount);
-    assertTrue(($normalized % 1000) === 0, $message);
-}
-
 $response = runConversion([
     'action' => 'convert',
-    'amount' => 122000,
+    'amount' => 11500000,
     'is_tax_included' => 'true',
     'vat_rate' => '0.08',
 ]);
 
 assertTrue(($response['data']['suggestion']['amount_raw'] % 1000) === 0, 'Suggested total must be rounded to 1,000 VND.');
-assertFormattedThousand($response['data']['suggestion']['amount_fmt'], 'Suggested total format must be a multiple of 1,000 VND.');
-assertFormattedThousand($response['data']['suggestion']['pre_fmt'], 'Suggested pre-tax amount must be a multiple of 1,000 VND.');
-assertFormattedThousand($response['data']['suggestion']['vat_fmt'], 'Suggested VAT amount must be a multiple of 1,000 VND.');
+assertTrue($response['data']['suggestion']['amount_fmt'] === '11.488.000', 'Suggested total should be rounded down to 11.488.000 VND.');
+assertTrue($response['data']['suggestion']['pre_fmt'] === '10.637.037', 'Suggested pre-tax amount must keep the exact reverse VAT calculation.');
+assertTrue($response['data']['suggestion']['vat_fmt'] === '850.963', 'Suggested VAT amount must keep the exact reverse VAT calculation.');
+assertTrue($response['data']['suggestion']['diff'] === '12.000', 'Difference should reflect the rounded suggested total.');
 
 echo "suggestion_rounding_test passed\n";

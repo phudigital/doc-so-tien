@@ -21,10 +21,6 @@ function roundDownToThousand($amount) {
     return (int) (floor($amount / 1000) * 1000);
 }
 
-function roundToNearestThousand($amount) {
-    return (int) (round($amount / 1000) * 1000);
-}
-
 function buildRoundedSuggestion($amount, $vat_rate) {
     $step = ($vat_rate == 0.10) ? 11000 : 13500;
     $steps_count = floor($amount / $step);
@@ -35,8 +31,8 @@ function buildRoundedSuggestion($amount, $vat_rate) {
         return null;
     }
 
-    $suggested_vat = roundToNearestThousand($suggested_total - ($suggested_total / (1 + $vat_rate)));
-    $suggested_pre_tax = $suggested_total - $suggested_vat;
+    $suggested_pre_tax = $suggested_total / (1 + $vat_rate);
+    $suggested_vat = $suggested_total - $suggested_pre_tax;
 
     return [
         'amount_raw' => $suggested_total,

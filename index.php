@@ -56,7 +56,7 @@ require_once 'process.php';
             <div id="suggestion-chips" class="suggestion-chips" aria-label="Gợi ý nhanh"></div>
           </div>
 
-          <!-- VAT + toggle + button — cùng 1 dòng -->
+          <!-- VAT + toggle + suggestion + button — cùng 1 dòng -->
           <div class="controls-row">
             <div class="vat-segment" role="radiogroup" aria-label="Thuế suất VAT">
               <label class="vat-option">
@@ -74,6 +74,16 @@ require_once 'process.php';
               <span class="toggle-track" aria-hidden="true"></span>
               <span class="toggle-label">Đã gồm VAT</span>
             </label>
+
+            <!-- Spacer -->
+            <div class="controls-spacer"></div>
+
+            <!-- Suggestion inline (hiện khi có kết quả) -->
+            <div id="suggestion-box" class="suggest-inline" role="status" aria-live="polite">
+              <span class="suggest-inline-amount" id="sug-amount"></span>
+              <span class="suggest-inline-diff" id="sug-diff"></span>
+              <button type="button" class="btn-apply-inline" id="btn-apply-suggestion">Dùng</button>
+            </div>
 
             <button type="submit" class="btn-calc" id="btn-calc">Tính nhanh</button>
           </div>
@@ -126,28 +136,6 @@ require_once 'process.php';
             </div>
             <strong class="metric-value" id="res-post"></strong>
           </div>
-        </div>
-
-        <!-- Suggestion card (hidden by default) -->
-        <div id="suggestion-box" class="suggest-card">
-          <div class="suggest-header">
-            <div>
-              <span class="suggest-chip">Đề xuất làm tròn</span>
-              <div class="suggest-amount" id="sug-amount"></div>
-              <div class="suggest-diff">Chênh lệch <span id="sug-diff"></span> so với số nhập</div>
-            </div>
-          </div>
-          <div class="suggest-breakdown">
-            <div class="suggest-stat">
-              <span>Trước thuế</span>
-              <strong id="sug-pre"></strong>
-            </div>
-            <div class="suggest-stat">
-              <span>VAT</span>
-              <strong id="sug-vat"></strong>
-            </div>
-          </div>
-          <button type="button" class="btn-apply" id="btn-apply-suggestion">Áp dụng gợi ý này</button>
         </div>
 
         <!-- Text output card -->

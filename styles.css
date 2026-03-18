@@ -437,7 +437,6 @@ body {
 
 /* ── Submit Button (inline in controls-row) ──────────── */
 .btn-calc {
-  margin-left: auto;          /* push to right end of flex row */
   flex-shrink: 0;
   background: var(--accent);
   color: #fff;
@@ -645,97 +644,71 @@ body {
   stroke-linejoin: round;
 }
 
-/* ── Suggestion Panel ──────────────────────────────────── */
-.suggest-card {
+
+/* ── Controls spacer ────────────────────────────────────── */
+.controls-spacer {
+  flex: 1;
+  min-width: var(--sp-2);
+}
+
+/* ── Suggestion inline (cùng dòng controls-row) ───────── */
+.suggest-inline {
   display: none;
-  background: linear-gradient(135deg, rgba(251, 191, 36, 0.05) 0%, var(--bg-panel) 100%);
-  border: 1px solid rgba(251, 191, 36, 0.2);
-  border-radius: var(--r-xl);
-  padding: var(--sp-5);
-}
-
-.suggest-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: var(--sp-3);
-  margin-bottom: var(--sp-4);
-}
-
-.suggest-chip {
-  font-size: 0.625rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--warning);
-  background: rgba(251, 191, 36, 0.12);
-  border: 1px solid rgba(251, 191, 36, 0.25);
-  border-radius: 100px;
-  padding: 3px 10px;
-}
-
-.suggest-amount {
-  font-family: var(--font-mono);
-  font-size: 1.625rem;
-  font-weight: 700;
-  color: #fde68a;
-  letter-spacing: -0.03em;
-  line-height: 1.2;
-}
-
-.suggest-diff {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  margin-top: var(--sp-1);
-}
-
-.suggest-breakdown {
-  display: flex;
-  gap: var(--sp-6);
-  padding: var(--sp-3) 0;
-  border-top: 1px solid rgba(251, 191, 36, 0.1);
-  margin-top: var(--sp-3);
-}
-
-.suggest-stat {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.suggest-stat span {
-  font-size: 0.6875rem;
-  font-weight: 500;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-
-.suggest-stat strong {
-  font-family: var(--font-mono);
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-}
-
-.btn-apply {
-  margin-top: var(--sp-4);
-  background: rgba(251, 191, 36, 0.12);
-  border: 1px solid rgba(251, 191, 36, 0.3);
+  align-items: center;
+  gap: var(--sp-2);
+  background: rgba(251, 191, 36, 0.05);
+  border: 1px solid rgba(251, 191, 36, 0.22);
   border-radius: var(--r-md);
-  padding: 9px var(--sp-5);
-  font-family: var(--font-sans);
-  font-size: 0.8125rem;
-  font-weight: 600;
-  color: #fde68a;
-  cursor: pointer;
-  transition: background var(--dur-fast) ease, border-color var(--dur-fast) ease;
+  padding: 6px 8px 6px 12px;
+  flex-shrink: 0;
+  max-width: 260px;
+  overflow: hidden;
 }
 
-.btn-apply:hover {
-  background: rgba(251, 191, 36, 0.2);
+.suggest-inline.visible {
+  display: flex;
+}
+
+.suggest-inline-amount {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #fde68a;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.suggest-inline-diff {
+  font-size: 0.6875rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 1;
+  min-width: 0;
+}
+
+.btn-apply-inline {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #fde68a;
+  background: rgba(251, 191, 36, 0.15);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  border-radius: var(--r-sm);
+  padding: 4px 9px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background var(--dur-fast) ease;
+  white-space: nowrap;
+}
+
+.btn-apply-inline:hover {
+  background: rgba(251, 191, 36, 0.28);
   border-color: rgba(251, 191, 36, 0.5);
 }
+
 
 /* ── Text Output Panel ─────────────────────────────────── */
 .output-card {
@@ -961,6 +934,15 @@ body {
   .amount-input {
     font-size: 1.25rem;
   }
+
+  /* Suggestion wraps below on mobile */
+  .controls-spacer { display: none; }
+  .suggest-inline {
+    max-width: 100%;
+    width: 100%;
+    order: 10;
+    flex-basis: 100%;
+  }
 }
 
 /* ── Animations ────────────────────────────────────────── */
@@ -978,7 +960,6 @@ body {
 
 .card,
 .metric-card,
-.suggest-card,
 .output-card {
   animation: fadeIn var(--dur-med) var(--ease-out) both;
 }

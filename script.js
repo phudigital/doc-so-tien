@@ -187,14 +187,14 @@ function renderResult(d) {
   // Suggestion
   if (d.suggestion) {
     const sug = d.suggestion;
-    setTextIfExists('sug-amount', sug.amount_fmt + ' VNĐ');
+    setTextIfExists('sug-amount', sug.amount_fmt + ' đ');
     setTextIfExists('sug-pre',    sug.pre_fmt);
     setTextIfExists('sug-vat',    sug.vat_fmt);
-    setTextIfExists('sug-diff',   sug.diff + ' VNĐ');
+    setTextIfExists('sug-diff',   '−' + sug.diff + ' đ');
     currentRawSuggestion = sug.amount_raw;
-    suggestionBox.style.display = 'block';
+    suggestionBox.classList.add('visible');
   } else {
-    suggestionBox.style.display = 'none';
+    suggestionBox.classList.remove('visible');
   }
 }
 
@@ -212,7 +212,7 @@ function showError(msg) {
   errorMsg.style.display = 'block';
   emptyState.style.display = 'flex';
   resultArea.style.display = 'none';
-  suggestionBox.style.display = 'none';
+  suggestionBox.classList.remove('visible');
 }
 
 function clearError() {

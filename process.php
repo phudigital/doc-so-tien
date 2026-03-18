@@ -22,7 +22,7 @@ function roundDownToThousand($amount) {
 }
 
 function buildRoundedSuggestion($amount, $vat_rate) {
-    $step = ($vat_rate == 0.10) ? 11000 : 13500;
+    $step = ($vat_rate == 0.10) ? 11000 : 27000;
     $steps_count = floor($amount / $step);
     $base_suggested_total = $steps_count * $step;
     $suggested_total = roundDownToThousand($base_suggested_total);

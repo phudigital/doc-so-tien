@@ -12,7 +12,12 @@ require_once 'process.php';
   <link rel="stylesheet" href="styles.css?v=<?php echo APP_VERSION; ?>">
 </head>
 <body>
-
+<!-- Mặc định ẩn nội dung cho tới khi check theme xong để chống chớp trắng/đen -->
+<script>
+  if (localStorage.getItem('theme') === 'light' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: light)').matches)) {
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
+</script>
 <div class="app-wrap">
 
   <!-- ── Header ── -->
@@ -26,7 +31,13 @@ require_once 'process.php';
         <div class="brand-tagline">Tính VAT &amp; đọc số tiền</div>
       </div>
     </div>
-    <span class="version-badge">v<?php echo APP_VERSION; ?></span>
+    <div style="display: flex; align-items: center; gap: var(--sp-3);">
+      <button id="theme-toggle" class="btn-theme" aria-label="Đổi giao diện Sáng/Tối">
+        <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <span class="version-badge">v<?php echo APP_VERSION; ?></span>
+    </div>
   </header>
 
   <!-- ── Main Grid ── -->

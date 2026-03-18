@@ -71,6 +71,39 @@
   --z-modal: 50;
 }
 
+/* ── Light Theme Tokens ───────────────────────────────── */
+[data-theme="light"] {
+  /* Background layers */
+  --bg-base: #f8f9fc;
+  --bg-surface: #ffffff;
+  --bg-elevated: #ffffff;
+  --bg-panel: #ffffff;
+  --bg-input: #f1f5f9;
+  --bg-hover: #e2e8f0;
+
+  /* Borders */
+  --border-subtle: rgba(0, 0, 0, 0.05);
+  --border-default: rgba(0, 0, 0, 0.10);
+  --border-strong: rgba(0, 0, 0, 0.15);
+
+  /* Brand / Accent */
+  --accent: #4f46e5;
+  --accent-hover: #4338ca;
+  --accent-glow: rgba(79, 70, 229, 0.2);
+  --accent-light: rgba(79, 70, 229, 0.08);
+
+  /* Text */
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --text-accent: #4f46e5;
+
+  /* Status */
+  --success: #10b981;
+  --error: #ef4444;
+  --warning: #f59e0b;
+}
+
 /* ── Reset / Base ──────────────────────────────────────── */
 *,
 *::before,
@@ -170,6 +203,69 @@ body {
   border-radius: 100px;
   padding: 3px 10px;
   letter-spacing: 0.02em;
+}
+
+/* Theme Toggle Button */
+.btn-theme {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--r-sm);
+  background: var(--bg-panel);
+  border: 1px solid var(--border-default);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--dur-fast) var(--ease-out);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-theme:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+  border-color: var(--border-strong);
+}
+
+.btn-theme svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  position: absolute;
+  transition: transform var(--dur-med) var(--ease-out), opacity var(--dur-fast) ease;
+}
+
+.icon-sun {
+  opacity: 0;
+  transform: rotate(90deg) scale(0);
+}
+.icon-moon {
+  opacity: 1;
+  transform: rotate(0) scale(1);
+}
+
+[data-theme="light"] .icon-sun {
+  opacity: 1;
+  transform: rotate(0) scale(1);
+}
+[data-theme="light"] .icon-moon {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0);
+}
+
+[data-theme="light"] .version-badge {
+  border-color: rgba(79, 70, 229, 0.15);
+}
+
+[data-theme="light"] body {
+  background-image:
+    radial-gradient(ellipse 80% 50% at 20% -10%, rgba(79, 70, 229, 0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 110%, rgba(139, 92, 246, 0.04) 0%, transparent 60%);
 }
 
 /* ── Main Content Grid ─────────────────────────────────── */
@@ -674,7 +770,7 @@ body {
   font-family: var(--font-mono);
   font-size: 0.8125rem;
   font-weight: 700;
-  color: #fde68a;
+  color: var(--warning);
   letter-spacing: -0.01em;
   white-space: nowrap;
 }
@@ -694,7 +790,7 @@ body {
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: #fde68a;
+  color: var(--warning);
   background: rgba(251, 191, 36, 0.15);
   border: 1px solid rgba(251, 191, 36, 0.3);
   border-radius: var(--r-sm);

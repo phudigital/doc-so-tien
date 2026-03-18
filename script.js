@@ -144,7 +144,7 @@ function runCalculation(event) {
     .then((data) => {
       if (data.status === "success") {
         emptyState.style.display = "none";
-        resultArea.style.display = "block";
+        resultArea.style.display = "grid";
 
         document.getElementById("res-pre").innerText = data.data.pre_tax;
         document.getElementById("res-vat").innerText = data.data.vat;

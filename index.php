@@ -14,7 +14,7 @@ require_once 'process.php';
 </head>
 <body>
 <main class="page-wrap">
-    <section class="single-workspace">
+    <section class="single-workspace simple-shell">
         <header class="workspace-header">
             <div class="workspace-brand">
                 <div class="hero-icon" aria-hidden="true">
@@ -31,9 +31,8 @@ require_once 'process.php';
                     </svg>
                 </div>
                 <div class="brand-copy">
-                    <p class="hero-kicker">QuoteCalc Workspace</p>
                     <h1 class="hero-title">QuoteCalc<span>+</span></h1>
-                    <p class="hero-subtitle">Tính VAT và đọc số tiền trong một màn hình gọn, đủ dùng cho thao tác nhanh.</p>
+                    <p class="hero-subtitle">Tính VAT nhanh trong một màn hình gọn.</p>
                 </div>
             </div>
             <div class="workspace-meta">
@@ -75,9 +74,8 @@ require_once 'process.php';
                 <div id="error-msg" class="error-msg"></div>
 
                 <div id="empty-state" class="empty-state panel">
-                    <p class="panel-kicker">Ready</p>
                     <h2 class="panel-title">Nhập số tiền để xem kết quả</h2>
-                    <p class="empty-copy">Tất cả thông tin chính sẽ hiển thị ngay tại đây: trước thuế, VAT, tổng tiền, gợi ý làm tròn và nội dung copy.</p>
+                    <p class="empty-copy">Các kết quả chính, gợi ý và nội dung copy sẽ hiện ngay tại đây.</p>
                 </div>
 
                 <div id="result-area">
@@ -115,8 +113,7 @@ require_once 'process.php';
 
                     <div class="content-grid">
                         <section id="suggestion-box" class="panel suggestion-panel">
-                            <p class="panel-kicker">Đề xuất</p>
-                            <h2 class="panel-title">Làm tròn thông minh</h2>
+                            <h2 class="panel-title">Gợi ý</h2>
                             <span class="suggest-highlight" id="sug-amount"></span>
                             <div class="suggest-meta">Giảm <span id="sug-diff"></span> so với số nhập.</div>
                             <div class="suggest-stat-row">
@@ -133,8 +130,7 @@ require_once 'process.php';
                         </section>
 
                         <section class="panel output-panel">
-                            <p class="panel-kicker">Đọc số nhanh</p>
-                            <h2 class="panel-title">2 phiên bản dùng nhiều nhất</h2>
+                            <h2 class="panel-title">Đọc số nhanh</h2>
                             <div class="copy-list">
                                 <div class="copy-line">
                                     <div class="text-box" id="txt-sentence"></div>
@@ -159,13 +155,12 @@ require_once 'process.php';
                     <div class="history-title">
                         <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm.5 5H11v6l5.25 3.15.75-1.23-4.5-2.67z"></path></svg>
                         <div>
-                            <p class="panel-kicker">Lịch sử</p>
-                            <h2 class="panel-title">Gần đây</h2>
+                            <h2 class="panel-title">Lịch sử</h2>
                         </div>
                     </div>
                     <button class="btn-clear-history" id="btn-clear-history" style="display: none;">Xóa</button>
                 </div>
-                <p class="history-note">Lưu tối đa 50 kết quả và cuộn trong khung này.</p>
+                <p class="history-note">Tối đa 50 kết quả gần đây.</p>
                 <div class="history-scroll-shell">
                     <div class="history-list" id="history-list">
                         <div class="history-empty">Chưa có lịch sử</div>

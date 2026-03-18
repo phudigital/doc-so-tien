@@ -1,9 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap");
 
 :root {
-    --bg: #f4f5f7;
+    --bg: #f6f7f9;
     --surface: #ffffff;
-    --surface-2: #f8fafc;
+    --surface-2: #f3f6f9;
     --text: #162033;
     --muted: #64748b;
     --line: #d9e2ec;
@@ -12,7 +12,7 @@
     --warning: #b45309;
     --warning-bg: #fff7ed;
     --danger: #dc2626;
-    --shadow: 0 14px 34px rgba(15, 23, 42, 0.08);
+    --shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
     --font-ui: "Manrope", "Segoe UI", sans-serif;
     --font-accent: "Manrope", "Segoe UI", sans-serif;
 }
@@ -31,9 +31,7 @@ body {
 body {
     font-family: var(--font-ui);
     color: var(--text);
-    background:
-        radial-gradient(circle at top left, rgba(15, 118, 110, 0.08), transparent 25%),
-        linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%);
+    background: var(--bg);
 }
 
 .page-wrap {
@@ -51,10 +49,10 @@ body {
     grid-template-rows: auto auto minmax(0, 1fr);
     gap: 14px;
     min-height: calc(100vh - 28px);
-    padding: 18px;
+    padding: 16px;
     border: 1px solid var(--line);
-    border-radius: 28px;
-    background: rgba(255, 255, 255, 0.85);
+    border-radius: 20px;
+    background: var(--surface);
     box-shadow: var(--shadow);
     overflow: hidden;
 }
@@ -74,19 +72,19 @@ body {
 }
 
 .hero-icon {
-    width: 56px;
-    height: 56px;
+    width: 48px;
+    height: 48px;
     flex-shrink: 0;
     display: grid;
     place-items: center;
-    border-radius: 16px;
-    background: linear-gradient(135deg, rgba(15, 118, 110, 0.12), rgba(29, 78, 216, 0.12));
+    border-radius: 14px;
+    background: rgba(15, 118, 110, 0.08);
     border: 1px solid rgba(15, 118, 110, 0.12);
 }
 
 .hero-icon svg {
-    width: 30px;
-    height: 30px;
+    width: 26px;
+    height: 26px;
     fill: none;
     stroke: var(--accent);
     stroke-width: 1.4;
@@ -97,16 +95,16 @@ body {
 .hero-kicker,
 .panel-kicker {
     font-family: var(--font-accent);
-    font-size: 13px;
-    font-weight: 700;
+    font-size: 12px;
+    font-weight: 800;
     color: var(--accent);
     letter-spacing: 0.02em;
 }
 
 .hero-title {
-    margin-top: 4px;
+    margin-top: 2px;
     font-family: var(--font-accent);
-    font-size: clamp(30px, 3.2vw, 36px);
+    font-size: clamp(28px, 2.7vw, 32px);
     line-height: 1;
     letter-spacing: -0.01em;
 }
@@ -116,10 +114,10 @@ body {
 }
 
 .hero-subtitle {
-    margin-top: 6px;
+    margin-top: 4px;
     color: var(--muted);
-    font-size: 15px;
-    line-height: 1.55;
+    font-size: 14px;
+    line-height: 1.45;
 }
 
 .workspace-meta {
@@ -129,13 +127,13 @@ body {
 .version-chip {
     display: inline-flex;
     align-items: center;
-    min-height: 34px;
-    padding: 8px 12px;
+    min-height: 32px;
+    padding: 6px 11px;
     border-radius: 999px;
     border: 1px solid var(--line);
     background: var(--surface);
     color: var(--accent);
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 700;
 }
 
@@ -144,9 +142,9 @@ body {
     grid-template-columns: minmax(0, 1.8fr) minmax(0, 1fr) auto;
     gap: 12px;
     align-items: end;
-    padding: 14px;
+    padding: 12px;
     border: 1px solid var(--line);
-    border-radius: 22px;
+    border-radius: 16px;
     background: var(--surface-2);
 }
 
@@ -162,7 +160,7 @@ body {
 .input-label {
     display: block;
     margin-bottom: 7px;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 700;
     color: var(--muted);
     letter-spacing: 0.02em;
@@ -170,13 +168,13 @@ body {
 
 input[type="text"] {
     width: 100%;
-    min-height: 54px;
-    padding: 12px 16px;
+    min-height: 50px;
+    padding: 10px 14px;
     border: 1px solid var(--line);
-    border-radius: 16px;
+    border-radius: 12px;
     background: var(--surface);
     color: var(--text);
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 700;
     outline: none;
     transition: border-color 0.18s ease, box-shadow 0.18s ease;
@@ -196,7 +194,7 @@ input[type="text"]:focus {
     max-height: 170px;
     overflow-y: auto;
     border: 1px solid var(--line);
-    border-radius: 16px;
+    border-radius: 12px;
     background: #fff;
     box-shadow: 0 18px 36px rgba(15, 23, 42, 0.12);
     z-index: 20;
@@ -241,7 +239,7 @@ input[type="text"]:focus {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     padding: 4px;
     border: 1px solid var(--line);
-    border-radius: 16px;
+    border-radius: 12px;
     background: var(--surface);
 }
 
@@ -250,10 +248,10 @@ input[type="text"]:focus {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    min-height: 46px;
-    padding: 0 14px;
-    border-radius: 16px;
-    font-size: 14px;
+    min-height: 42px;
+    padding: 0 12px;
+    border-radius: 12px;
+    font-size: 13px;
     font-weight: 600;
     white-space: nowrap;
 }
@@ -299,9 +297,9 @@ input[type="checkbox"] {
 }
 
 .btn-submit {
-    min-height: 54px;
-    padding: 0 18px;
-    border-radius: 16px;
+    min-height: 50px;
+    padding: 0 16px;
+    border-radius: 12px;
     background: linear-gradient(135deg, var(--accent), var(--accent-2));
     color: #fff;
     white-space: nowrap;
@@ -326,7 +324,7 @@ input[type="checkbox"] {
     display: none;
     padding: 12px 14px;
     border: 1px solid rgba(220, 38, 38, 0.18);
-    border-radius: 16px;
+    border-radius: 12px;
     background: #fef2f2;
     color: #991b1b;
 }
@@ -334,12 +332,12 @@ input[type="checkbox"] {
 .panel,
 .history-panel {
     border: 1px solid var(--line);
-    border-radius: 22px;
+    border-radius: 16px;
     background: var(--surface);
 }
 
 .panel {
-    padding: 16px;
+    padding: 14px;
 }
 
 .empty-state {
@@ -349,7 +347,7 @@ input[type="checkbox"] {
 .panel-title {
     margin-top: 4px;
     font-family: var(--font-accent);
-    font-size: 22px;
+    font-size: 18px;
     line-height: 1.1;
     letter-spacing: -0.01em;
 }
@@ -357,7 +355,7 @@ input[type="checkbox"] {
 .empty-copy {
     margin-top: 10px;
     color: var(--muted);
-    font-size: 15px;
+    font-size: 14px;
     line-height: 1.6;
 }
 
@@ -369,7 +367,7 @@ input[type="checkbox"] {
 }
 
 .metrics-panel {
-    padding: 12px;
+    padding: 10px;
 }
 
 .metrics-grid {
@@ -379,9 +377,9 @@ input[type="checkbox"] {
 }
 
 .metric-card {
-    padding: 16px;
+    padding: 14px;
     border: 1px solid var(--line);
-    border-radius: 18px;
+    border-radius: 12px;
     background: var(--surface-2);
 }
 
@@ -399,15 +397,15 @@ input[type="checkbox"] {
 .metric-label {
     display: block;
     color: var(--muted);
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 700;
     letter-spacing: 0.01em;
 }
 
 .metric-value {
     display: block;
-    margin-top: 8px;
-    font-size: clamp(21px, 1.8vw, 28px);
+    margin-top: 6px;
+    font-size: clamp(19px, 1.5vw, 24px);
     line-height: 1.1;
     letter-spacing: -0.04em;
 }
@@ -430,8 +428,8 @@ input[type="checkbox"] {
 
 .suggest-highlight {
     display: block;
-    margin-top: 12px;
-    font-size: clamp(24px, 2vw, 28px);
+    margin-top: 10px;
+    font-size: clamp(20px, 1.7vw, 24px);
     line-height: 1;
     letter-spacing: -0.04em;
     color: var(--warning);
@@ -440,7 +438,7 @@ input[type="checkbox"] {
 .suggest-meta {
     margin-top: 10px;
     color: #9a3412;
-    font-size: 14px;
+    font-size: 13px;
 }
 
 .suggest-stat-row {
@@ -450,8 +448,8 @@ input[type="checkbox"] {
 }
 
 .suggest-stat {
-    padding: 10px 12px;
-    border-radius: 14px;
+    padding: 9px 10px;
+    border-radius: 10px;
     background: rgba(255, 255, 255, 0.72);
 }
 
@@ -459,7 +457,7 @@ input[type="checkbox"] {
     display: block;
     color: #9a3412;
     font-family: var(--font-accent);
-    font-size: 13px;
+    font-size: 12px;
     letter-spacing: 0.01em;
 }
 
@@ -467,14 +465,14 @@ input[type="checkbox"] {
     display: block;
     margin-top: 4px;
     color: #7c2d12;
-    font-size: 16px;
+    font-size: 15px;
 }
 
 .btn-apply {
-    margin-top: 12px;
-    min-height: 46px;
+    margin-top: 10px;
+    min-height: 42px;
     width: 100%;
-    border-radius: 14px;
+    border-radius: 12px;
     background: linear-gradient(135deg, #f59e0b, #ea580c);
     color: #fff;
 }
@@ -486,7 +484,7 @@ input[type="checkbox"] {
 }
 
 .copy-list {
-    margin-top: 12px;
+    margin-top: 10px;
     display: grid;
     gap: 10px;
     flex: 1;
@@ -497,16 +495,16 @@ input[type="checkbox"] {
 }
 
 .text-box {
-    min-height: 68px;
-    padding: 12px 60px 12px 12px;
+    min-height: 58px;
+    padding: 10px 54px 10px 10px;
     border: 1px solid var(--line);
-    border-radius: 14px;
+    border-radius: 10px;
     background: var(--surface-2);
     display: flex;
     align-items: center;
     color: var(--text);
-    font-size: 15px;
-    line-height: 1.5;
+    font-size: 14px;
+    line-height: 1.45;
 }
 
 .btn-copy-inline {
@@ -514,13 +512,13 @@ input[type="checkbox"] {
     right: 8px;
     top: 50%;
     transform: translateY(-50%);
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     padding: 0;
-    border-radius: 10px;
+    border-radius: 9px;
     background: #1f2937;
     color: #fff;
     font-size: 0;
@@ -550,7 +548,7 @@ input[type="checkbox"] {
     min-height: 0;
     height: 100%;
     max-height: 100%;
-    padding: 16px;
+    padding: 14px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -578,20 +576,21 @@ input[type="checkbox"] {
 }
 
 .history-note {
-    margin-top: 10px;
+    margin-top: 8px;
     color: var(--muted);
     font-family: var(--font-accent);
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1.45;
 }
 
 .history-scroll-shell {
-    margin-top: 12px;
+    margin-top: 10px;
     flex: 1;
     min-height: 0;
-    max-height: 100%;
+    height: calc(100vh - 260px);
+    max-height: calc(100vh - 260px);
     border: 1px solid var(--line);
-    border-radius: 16px;
+    border-radius: 12px;
     background: var(--surface-2);
     overflow: hidden;
 }
@@ -620,9 +619,9 @@ input[type="checkbox"] {
     display: flex;
     justify-content: space-between;
     gap: 8px;
-    padding: 10px 12px;
+    padding: 9px 10px;
     border: 1px solid var(--line);
-    border-radius: 14px;
+    border-radius: 10px;
     background: var(--surface-2);
     cursor: pointer;
 }
@@ -650,7 +649,7 @@ input[type="checkbox"] {
 .history-time,
 .history-empty {
     color: var(--muted);
-    font-size: 13px;
+    font-size: 12px;
 }
 
 .history-empty {
@@ -716,5 +715,7 @@ input[type="checkbox"] {
 
     .history-scroll-shell {
         min-height: 220px;
+        height: auto;
+        max-height: none;
     }
 }

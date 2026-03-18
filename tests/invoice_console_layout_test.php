@@ -21,6 +21,7 @@ function assertNotContains(string $needle, string $haystack, string $message): v
 }
 
 assertContains('single-workspace', $html, 'Index page must render the single-workspace shell.');
+assertContains('simple-shell', $html, 'Index page must render the simplified shell variant.');
 assertContains('control-bar', $html, 'Index page must render the compact control bar.');
 assertContains('metrics-grid', $html, 'Index page must render the compact metrics grid.');
 assertContains('content-grid', $html, 'Index page must render the lower content grid.');

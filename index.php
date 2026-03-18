@@ -51,27 +51,21 @@ require_once 'process.php';
               inputmode="numeric"
               autofocus
               aria-label="Nhập số tiền"
-              aria-autocomplete="list"
-              aria-controls="suggestion-dropdown"
             >
-            <div id="suggestion-dropdown" class="suggestion-dropdown" role="listbox" aria-label="Gợi ý số tiền"></div>
-            <div class="amount-hint">
-              <span>Tối thiểu 100.000</span>
-              <span>·</span>
-              <span>Tối đa 100.000.000.000</span>
-            </div>
+            <!-- Inline suggestion chips -->
+            <div id="suggestion-chips" class="suggestion-chips" aria-label="Gợi ý nhanh"></div>
           </div>
 
-          <!-- VAT + toggle row -->
+          <!-- VAT + toggle + button — cùng 1 dòng -->
           <div class="controls-row">
             <div class="vat-segment" role="radiogroup" aria-label="Thuế suất VAT">
               <label class="vat-option">
                 <input type="radio" name="vat_rate" value="0.08" checked>
-                <span>VAT 8%</span>
+                <span>8%</span>
               </label>
               <label class="vat-option">
                 <input type="radio" name="vat_rate" value="0.10">
-                <span>VAT 10%</span>
+                <span>10%</span>
               </label>
             </div>
 
@@ -80,9 +74,9 @@ require_once 'process.php';
               <span class="toggle-track" aria-hidden="true"></span>
               <span class="toggle-label">Đã gồm VAT</span>
             </label>
-          </div>
 
-          <button type="submit" class="btn-calc" id="btn-calc">Tính nhanh</button>
+            <button type="submit" class="btn-calc" id="btn-calc">Tính nhanh</button>
+          </div>
         </form>
       </div>
 

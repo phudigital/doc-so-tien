@@ -11,7 +11,7 @@ const resultArea        = document.getElementById('result-area');
 const suggestionBox     = document.getElementById('suggestion-box');
 const historyList       = document.getElementById('history-list');
 const btnClearHistory   = document.getElementById('btn-clear-history');
-const suggestionDropdown = document.getElementById('suggestion-dropdown');
+const suggestionChips   = document.getElementById('suggestion-chips');
 const vatRadios         = document.getElementsByName('vat_rate');
 
 // ── State ─────────────────────────────────────────────────
@@ -46,11 +46,11 @@ function setTextIfExists(id, value) {
 amountInput.addEventListener('input', function (e) {
   const digits = e.target.value.replace(/\D/g, '');
 
-  // Quick suggestions for short inputs (1-3 digits)
+  // Show inline chips for 1-3 digit prefix
   if (digits && digits.length <= 3) {
-    showSuggestions(digits);
+    showSuggestionChips(digits);
   } else {
-    hideSuggestions();
+    clearSuggestionChips();
   }
 
   // Format with locale separators
@@ -58,45 +58,35 @@ amountInput.addEventListener('input', function (e) {
 });
 
 amountInput.addEventListener('keydown', function (e) {
-  if (e.key === 'Escape') hideSuggestions();
+  if (e.key === 'Escape') clearSuggestionChips();
 });
 
-// Close dropdown on outside click
-document.addEventListener('click', function (e) {
-  if (e.target !== amountInput && !suggestionDropdown.contains(e.target)) {
-    hideSuggestions();
-  }
-});
-
-function showSuggestions(num) {
+function showSuggestionChips(num) {
   const base = parseInt(num);
-  if (isNaN(base) || base === 0) { hideSuggestions(); return; }
+  if (isNaN(base) || base === 0) { clearSuggestionChips(); return; }
 
   const suggestions = [
-    { value: base * 100000,    label: 'trăm ngàn' },
-    { value: base * 1000000,   label: 'triệu'     },
-    { value: base * 10000000,  label: 'chục triệu' },
+    { value: base * 100000,   label: 'trăm ngàn' },
+    { value: base * 1000000,  label: 'triệu'     },
+    { value: base * 10000000, label: 'chục triệu' },
   ];
 
-  suggestionDropdown.innerHTML = suggestions.map(s =>
-    `<div class="suggestion-item" role="option" tabindex="0"
-          onclick="applySuggestion(${s.value})"
-          onkeydown="if(event.key==='Enter')applySuggestion(${s.value})">
-       <strong>${s.value.toLocaleString('vi-VN')}</strong>
-       <small>${s.label}</small>
+  suggestionChips.innerHTML = suggestions.map(s =>
+    `<div class="sug-chip" onclick="applySuggestion(${s.value})">
+       <span class="sug-chip-amount">${s.value.toLocaleString('vi-VN')}</span>
+       <span class="sug-chip-label">${s.label}</span>
+       <button class="sug-chip-apply" tabindex="-1" aria-hidden="true">Dùng</button>
      </div>`
   ).join('');
-
-  suggestionDropdown.classList.add('visible');
 }
 
-function hideSuggestions() {
-  suggestionDropdown.classList.remove('visible');
+function clearSuggestionChips() {
+  if (suggestionChips) suggestionChips.innerHTML = '';
 }
 
 function applySuggestion(value) {
   amountInput.value = value.toLocaleString('vi-VN');
-  hideSuggestions();
+  clearSuggestionChips();
   amountInput.focus();
 }
 
